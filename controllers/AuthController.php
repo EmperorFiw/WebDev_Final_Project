@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../models/userModel.php';
+
 class AuthController {
     private $userModel;
 
@@ -6,34 +9,36 @@ class AuthController {
         $this->userModel = new UserModel();
     }
 
-    public function showLogin():void {
-        include '../views/login.php';
+    public function showLogin() {
+        $title = "Login";
+        require_once __DIR__ . '/../views/login.php';
     }
 
-    public function showRegister():void {
-        include '../views/register.php';
+    public function showRegister() {
+        $title = "Register";
+        require_once __DIR__ . '/../views/register.php';
     }
 
-    public function login():void {
+    public function login() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $username = $_POST['username'];
             $password = $_POST['password'];
-            $password = password_hash($password, PASSWORD_DEFAULT);
+            
             // ตรวจสอบข้อมูลการเข้าสู่ระบบ
-            $user = $this->userModel->getUserByUsernameAndPassword($username, $password);
-
-            if ($user) {
+            $user = $this->userModel->login_process($username, $password);
+    
+            if ($user && password_verify($password, $user['password'])) {
                 // หากล็อกอินสำเร็จ
                 echo "Welcome, " . $user['name'];
             } else {
                 // หากล็อกอินไม่สำเร็จ
-                echo "Invalid username or password!";
+                echo "<script>alert('Invalid username or password!');</script>";
             }
         }
     }
 
     // ฟังก์ชันสำหรับจัดการการ Register
-    public function register():void {
+    public function register() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $username = $_POST['username'];
             $password = $_POST['password'];

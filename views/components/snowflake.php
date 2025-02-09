@@ -1,28 +1,3 @@
-<style>
-    .snowflake {
-        position: fixed;
-        top: -10px;
-        color: white;
-        font-size: 24px;
-        user-select: none;
-    }
-
-    @keyframes fall {
-        to {
-            transform: translateY(100vh);
-        }
-    }
-
-    .snowflake:nth-child(odd) {
-        animation-duration: 7s;
-        animation-delay: -2s;
-    }
-
-    .snowflake:nth-child(even) {
-        animation-duration: 6s;
-        animation-delay: -1s;
-    }
-</style>
 
 <script>
         const numSnowflakes = 15;
