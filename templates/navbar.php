@@ -27,7 +27,7 @@
         <div class="r-box flex flex-cols cursor-pointer">
             <?php 
                 echo '<h1 class="text-white p-2 hover:text-purple-200"><a href="/home">หน้าหลัก</a></h1>';
-                if (!$data['isLoggedIn']) {
+                if (!isLoggedIn()) {
                     echo '<h1 class="text-white p-2 hover:text-purple-200"><a href="/register">สมัครสมาชิก</a></h1>';
                     echo '<h1 class="text-white p-2 hover:text-purple-200"><a href="/login">เข้าสู่ระบบ</a></h1>';
                 }
