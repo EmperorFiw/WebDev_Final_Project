@@ -6,7 +6,7 @@ class db {
     private $username = 'final';
     private $password = 'FP2025';
 
-    private function getConnection(): mysqli
+    public function getConnection(): mysqli
     {
         $conn = new mysqli($this->hostname, $this->username, $this->password, $this->dbName);
         if ($conn->connect_error) {
@@ -15,7 +15,4 @@ class db {
         return $conn;
     }
     
-    public function connect() {
-        return $this->getConnection();
-    }
 }

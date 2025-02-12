@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="/assets/css/snowFlake.css">
     <link rel="stylesheet" href="/assets/css/custom.css">
 </head>
-<body>
-    <nav class="bg-[#1e1640] flex justify-between items-center">
+<body class="bg-[#1e1640]">
+    <nav class=" flex justify-between items-center border-b-2 border-white">
         <div class="l-box">
             <h1 class="text-white p-2">Activity</h1>
         </div>
