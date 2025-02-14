@@ -16,7 +16,7 @@ if (!$event->isOwnerEvent($_SESSION['username'], $eventID))
     http_response_code(403);
     exit;
 }
-$statistic = new statistic();
+$statistic = new Statistic();
 $stats = $statistic->getStatistics($eventID);
 
 renderView('statistics_get', [

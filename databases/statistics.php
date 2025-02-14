@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-class statistic {
-    private $db = new db();
+class Statistic {
+    private $db = new DB();
     public function getStatistics(int $eventID) {
         $conn = $this->db->getConnection();
         

@@ -2,11 +2,11 @@
 declare(strict_types=1);
 require_once DATABASE_DIR. "/users.php";
 
-class events {
+class Events {
     private $db;
 
     public function __construct() {
-        $this->db = new db();
+        $this->db = new DB();
     }
     public function isOwnerEvent(string $username, int $eID): bool {       
         

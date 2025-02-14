@@ -1,3 +1,3 @@
 <?php
-$event = new events();
-$db = new db();
+$event = new Events();
+$db = new DB();
