@@ -16,11 +16,11 @@ if (!$event->isOwnerEvent($_SESSION['username'], $eventID))
     http_response_code(403);
     exit;
 }
-
-$statistics = $statistic->getStatistics($eventID);
+$statistic = new statistic();
+$stats = $statistic->getStatistics($eventID);
 
 renderView('statistics_get', [
-    'allMember' => $statistics['totalMembers'],
-    'ageData' => $statistics['ageData'],
-    'genderData' => $statistics['genderData']
+    'allMember' => $stats['totalMembers'],
+    'ageData' => $stats['ageData'],
+    'genderData' => $stats['genderData']
 ]);
