@@ -11,13 +11,13 @@ if (!isset($_SESSION['username']) || !isset($_POST['eventID'])) {
 }
 
 $evenID = $_POST['eventID'];
-if (!isOwnerEvent($_SESSION['username'], $eventID))
+if (!$event->isOwnerEvent($_SESSION['username'], $eventID))
 {
     http_response_code(403);
     exit;
 }
 
-$statistics = getStatistics($eventID);
+$statistics = $statistic->getStatistics($eventID);
 
 renderView('statistics_get', [
     'allMember' => $statistics['totalMembers'],

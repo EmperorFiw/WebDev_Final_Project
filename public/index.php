@@ -14,6 +14,8 @@ require_once INCLUDES_DIR . '/session.php';
 require_once INCLUDES_DIR . '/router.php';
 require_once INCLUDES_DIR . '/view.php';
 require_once INCLUDES_DIR . '/db.php';
+require_once INCLUDES_DIR . '/def_class.php';
+
 // Call dispatch to handle requests
 //echo '$_SERVER["REQUEST_URI"]=' . $_SERVER['REQUEST_URI'];
 dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
