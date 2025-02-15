@@ -1,23 +1,24 @@
 
 <title>Home</title>
-
-<div class="w-full grid grid-cols-3 gap-4 px-10 py-4">
-    <div class="left">
-        <h1 class="text-xl font-semibold">กิจกรรม</h1>
-    </div>
-    <div class="center flex items-center justify-end">
-        <div class="relative w-full">
-            <input type="text" placeholder="ค้นหากิจกรรม" class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full pr-10">
-            <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                <i class="fas fa-search"></i>
-            </span>
+<form action="/home" method="POST">
+    <div class="w-full grid grid-cols-3 gap-4 px-10 py-4">
+        <div class="left">
+            <h1 class="text-xl font-semibold">กิจกรรม</h1>
+        </div>
+        <div class="center flex items-center justify-end">
+            <div class="relative w-full">
+                <input type="text" name="keyword" placeholder="ค้นหากิจกรรม" class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full pr-10">
+                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+        </div>
+        <div class="right flex items-center space-x-2">
+            <input type="date" name="date" class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all rounded-md pr-10">
+            <button class="bg-[#301580] text-white px-4 py-2 rounded-2xl hover:bg-blue-600">ค้นหา</button>
         </div>
     </div>
-    <div class="right flex items-center space-x-2">
-        <input type="date" class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all rounded-md pr-10">
-        <button class="bg-[#301580] text-white px-4 py-2 rounded-2xl hover:bg-blue-600">ค้นหา</button>
-    </div>
-</div>
+</form>
 
 <div class="mt-8">
     <div class="relative flex items-center px-10">
@@ -27,7 +28,9 @@
 </div>
 <div class="grid grid-cols-3 gap-4 mt-8 mb-10 px-10">
     <?php 
-        if (empty($data['data'])) {
+        if (!empty($data['not_found'])) {
+            echo "<p class='text-white'>ไม่พบข้อมูล</p>";
+        } else if (empty($data['data'])) {
             echo "<p class='text-white'>ขณะนี้ยังไม่มีกิจกรรม</p>";
         } else {
             foreach ($data['data'] as $event) {

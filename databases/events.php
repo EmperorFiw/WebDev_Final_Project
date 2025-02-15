@@ -129,7 +129,35 @@ class Events {
         return $result['total_registered'] ?? 0;
     }
     
+    function findEvents(string $keyword, string $date): array {
+        $conditions = [];
+        
+        if (!empty($keyword)) {
+            $conditions[] = "event_name LIKE '%" . $this->conn->real_escape_string($keyword) . "%'";
+        }
+        
+        if (!empty($date)) {
+            $conditions[] = "(event_start_date <= '$date' AND event_end_date >= '$date')";
+        }
+        
+        $query = "SELECT * FROM events";
+        
+        if (count($conditions) > 0) {
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+        
+        $result = $this->conn->query($query);
     
-    
+        if ($result->num_rows > 0) {
+            $events = [];
+            while ($row = $result->fetch_assoc()) {
+                $events[] = $row;
+            }
+            return $events;
+        } else {
+            return [];
+        }
+    }
+
     
 }
