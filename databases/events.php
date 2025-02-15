@@ -82,7 +82,7 @@ class Events {
         return false;
     }
     public function getEventStatus($eid): string {
-        $query = "SELECT status FROM events WHERE id = ?";
+        $query = "SELECT status FROM events WHERE eid = ?";
         
         if ($stmt = $this->conn->prepare($query)) {
             $stmt->bind_param("i", $eid);
@@ -92,11 +92,11 @@ class Events {
             if ($stmt->fetch()) {
                 switch ($status) {
                     case 0:
-                        return "รับสมัคร";
+                        return "ปิดรับสมัคร";
                     case 1:
-                        return "กิจกรรมกำลังเริ่ม";
+                        return "เปิดรับสมัคร";
                     case 2:
-                        return "กิจกรรมจบ";
+                        return "กิจกรรมจบแล้ว";
                     default:
                         return "สถานะไม่รู้จัก";
                 }
@@ -129,7 +129,7 @@ class Events {
         return $result['total_registered'] ?? 0;
     }
     
-    function findEvents(string $keyword, string $date): array {
+    function getEventData(string $keyword, string $date): array {
         $conditions = [];
         
         if (!empty($keyword)) {
@@ -159,5 +159,16 @@ class Events {
         }
     }
 
-    
+    public function getEventDetails(int $eid): array {
+        $query = "SELECT * FROM events WHERE eid = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $eid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return [];
+        }
+    }
 }

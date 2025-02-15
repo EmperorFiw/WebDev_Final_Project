@@ -6,15 +6,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = isset($_POST['date']) ? $_POST['date'] : '';
 
     $events = new Events();
-    $eventList = $events->findEvents($key, $date);
+    $eventList = $events->getEventData($key, $date);
 
     if (empty($eventList)) {
-        renderView('home_get', ['not_found' => 1]);
+        renderView('home', ['not_found' => 1]);
     } else {
         foreach ($eventList as &$event) {
             $event['registered'] = $events->getRegistered($event['eid']);
         }
-        renderView('home_get', ['data' => $eventList]);
+        renderView('home', ['data' => $eventList]);
     }
 } else {
     http_response_code(403);

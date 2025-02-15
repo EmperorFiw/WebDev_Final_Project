@@ -68,7 +68,10 @@
             <p class="mt-4 text-sm">จำนวนที่รับ <?= htmlspecialchars($event['capacity']); ?></p>
             <p class="mt-4 text-sm">ลงทะเบียนแล้ว <?= htmlspecialchars($event['registered']); ?></p>
             <div class="flex justify-center items-center mt-4">
-                <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-lg hover:bg-blue-600">รายละเอียด</button>
+                <form action="/event_details" method="POST">
+                    <input type="hidden" name="eid" value="<?= $event['eid'] ?>">
+                    <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-lg hover:bg-blue-600">รายละเอียด</button>
+                </form>
             </div>
         </div>
     </div>
@@ -77,35 +80,4 @@
         }
     ?>
 </div>
-
-
-<script>
-    const prevBtns = document.querySelectorAll('.prevBtn');
-    const nextBtns = document.querySelectorAll('.nextBtn');
-    
-    document.querySelectorAll('.carousel').forEach((carousel, index) => {
-        const carouselItems = carousel.querySelectorAll('.carousel-item');
-        let currentIndex = 0;
-
-        function showSlide(index) {
-            carouselItems.forEach((item, i) => {
-                item.classList.remove('active');
-                if (i === index) {
-                    item.classList.add('active');
-                }
-            });
-        }
-
-        prevBtns[index].addEventListener('click', () => {
-            currentIndex = (currentIndex === 0) ? carouselItems.length - 1 : currentIndex - 1;
-            showSlide(currentIndex);
-        });
-
-        nextBtns[index].addEventListener('click', () => {
-            currentIndex = (currentIndex === carouselItems.length - 1) ? 0 : currentIndex + 1;
-            showSlide(currentIndex);
-        });
-
-        showSlide(currentIndex);
-    });
-</script>
+<script src="/assets/js/slide.js"></script>
