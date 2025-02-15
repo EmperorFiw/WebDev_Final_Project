@@ -31,7 +31,7 @@ if (isset($data['data']) && !empty($data['data'])):
         <div class="pl-4 flex-grow w-full">
             <div class="flex justify-between items-center px-4">
                 <h1 class="text-2xl font-semibold">รายละเอียดกิจกรรม</h1>
-                <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-2xl disabled <?= $event['status'] ? 'bg-green-500' : 'bg-red-500' ?>"><?= htmlspecialchars($event[1]['status']) ?></button>
+                <button class="mt-4 text-white px-4 py-2 rounded-2xl disabled <?= $event['status'] ? 'bg-green-500' : 'bg-red-500' ?>"><?= htmlspecialchars($event[1]['status']) ?></button>
             </div>
             <div class="px-4">
                 <p class="mt-4 text-md">
