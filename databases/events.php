@@ -1,12 +1,15 @@
 <?php
 declare(strict_types=1);
+require_once INCLUDES_DIR . "/db.php"; 
 require_once DATABASE_DIR. "/users.php";
 
 class Events {
     private $db;
+    private $users;
 
     public function __construct() {
         $this->db = new DB();
+        $this->users = new Users();
     }
     public function isOwnerEvent(string $username, int $eID): bool {       
         
@@ -30,7 +33,7 @@ class Events {
     
     public function isUserInEvent(string $uName, int $eID): bool {
         $conn = $this->db->getConnection();
-        $uid = getUserIDByName($uName);
+        $uid = $this->users->getUserIDByName($uName);
         $query = "SELECT 1 FROM history WHERE uid = ? AND eid = ? LIMIT 1";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ii", $uid, $eID);
@@ -72,7 +75,7 @@ class Events {
     
     public function isCheckInSucc(string $uName, int $eID):bool {
         $conn = $this->db->getConnection();
-        $uid = getUserIDByName($uName);
+        $uid = $this->users->getUserIDByName($uName);
         $query = "SELECT checkIn FROM history WHERE eid = ? AND uid = ? LIMIT 1";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ii", $eID, $uid);

@@ -65,8 +65,9 @@ else {
     }
     else if (!$event->isCheckInSucc($username, $eventID)){
         $eventName = $event->getEventName($evenID);
-        $uid = getUserIDByName($username);
-        if (updateUsersInt("checkIn", 1, $uid))
+        $users = new Users();
+        $uid = $user->getUserIDByName($username);
+        if ($users->updateUsersInt("checkIn", 1, $uid))
         echo '<script>
             document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({

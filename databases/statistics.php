@@ -2,8 +2,11 @@
 declare(strict_types=1);
 
 class Statistic {
-    private $db = new DB();
-    public function getStatistics(int $eventID) {
+    private $db;
+    public function __construct() {
+        $this->db = new DB();
+    }
+    public function getStatistics(int $eventID): array {
         $conn = $this->db->getConnection();
         
         $query = "SELECT age, gender FROM history WHERE eID = ?";

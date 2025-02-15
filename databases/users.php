@@ -2,7 +2,10 @@
 declare(strict_types=1);
 
 class Users {
-    private $db = new DB();
+    private $db;
+    public function __construct() {
+        $this->db = new DB();
+    }
     function getUserIDByName(string $uName): int {       
         $conn = $this->db->getConnection();
     
