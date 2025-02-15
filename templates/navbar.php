@@ -23,20 +23,20 @@
 </head>
 <body class="bg-[#1e1640]">
     <nav class=" flex justify-between items-center border-b-2 border-white">
-        <div class="l-box">
-            <h1 class="text-white p-2">Activity</h1>
+        <div class="l-box px-10">
+            <h1 class="text-white text-2xl">Activity</h1>
         </div>
-        <div class="r-box flex flex-cols cursor-pointer">
+        <div class="r-box flex flex-cols cursor-pointer px-10">
             <?php 
-                echo '<h1 class="text-white p-2 hover:text-purple-200"><a href="/home">หน้าหลัก</a></h1>';
+                echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/home">หน้าหลัก</a></h1>';
                 if (!isLoggedIn()) {
-                    echo '<h1 class="text-white p-2 hover:text-purple-200"><a href="/register">สมัครสมาชิก</a></h1>';
-                    echo '<h1 class="text-white p-2 hover:text-purple-200"><a href="/login">เข้าสู่ระบบ</a></h1>';
+                    echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/register">สมัครสมาชิก</a></h1>';
+                    echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/login">เข้าสู่ระบบ</a></h1>';
                 }
                 else
                 {
                     echo '<form action="/logout" method="POST" style="display:inline;">
-                        <button type="submit" class="text-white p-2 hover:text-purple-200">ออกจากระบบ</button></form>';
+                        <button type="submit" class="text-white p-2 hover:text-blue-600">ออกจากระบบ</button></form>';
                 }
             ?>
         </div>

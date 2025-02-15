@@ -6,20 +6,19 @@ require_once DATABASE_DIR. "/users.php";
 class Events {
     private $db;
     private $users;
+    private $conn;
 
     public function __construct() {
         $this->db = new DB();
+        $this->conn = $this->db->getConnection();
         $this->users = new Users();
     }
     public function isOwnerEvent(string $username, int $eID): bool {       
-        
-        $conn = $this->db->getConnection();
-    
         $query = "SELECT u.username 
                   FROM events e
                   JOIN users u ON e.oID = u.ID
                   WHERE e.ID = ? AND u.username = ?";
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
         $stmt->bind_param('is', $eID, $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -32,10 +31,9 @@ class Events {
     }
     
     public function isUserInEvent(string $uName, int $eID): bool {
-        $conn = $this->db->getConnection();
         $uid = $this->users->getUserIDByName($uName);
         $query = "SELECT 1 FROM history WHERE uid = ? AND eid = ? LIMIT 1";
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
         $stmt->bind_param("ii", $uid, $eID);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -47,9 +45,8 @@ class Events {
     
     
     public function isCheckInOpen(int $eID):bool {
-        $conn = $this->db->getConnection();
         $query = "SELECT 1 FROM events WHERE checkIn = 1 AND eid = ? LIMIT 1";
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i",$eID);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -60,9 +57,8 @@ class Events {
     }
     
     public function getEventName(int $eID): string {
-        $conn = $this->db->getConnection();
         $query = "SELECT event_name FROM events WHERE checkIn = 1 AND eid = ? LIMIT 1";
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $eID);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -74,10 +70,9 @@ class Events {
     }
     
     public function isCheckInSucc(string $uName, int $eID):bool {
-        $conn = $this->db->getConnection();
         $uid = $this->users->getUserIDByName($uName);
         $query = "SELECT checkIn FROM history WHERE eid = ? AND uid = ? LIMIT 1";
-        $stmt = $conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
         $stmt->bind_param("ii", $eID, $uid);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -87,10 +82,9 @@ class Events {
         return false;
     }
     public function getEventStatus($eid): string {
-        $conn = $this->db->getConnection();
         $query = "SELECT status FROM events WHERE id = ?";
         
-        if ($stmt = $conn->prepare($query)) {
+        if ($stmt = $this->conn->prepare($query)) {
             $stmt->bind_param("i", $eid);
             $stmt->execute();
             $stmt->bind_result($status);
@@ -111,5 +105,31 @@ class Events {
         
         return "ไม่พบกิจกรรม";
     }
+
+    public function getAllEvents(): array {
+        $query = "SELECT * FROM events";
+        $result = $this->conn->query($query);
+        if ($result->num_rows > 0) {
+            $events = [];
+            while ($row = $result->fetch_assoc()) {
+                $events[] = $row;
+            }
+            return $events;
+        } else {
+            return [];
+        }
+    }
+    
+    public function getRegistered(int $eid): int {
+        $query = "SELECT COUNT(*) AS total_registered FROM history WHERE eid = ? AND join_state = 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $eid);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total_registered'] ?? 0;
+    }
+    
+    
+    
     
 }
