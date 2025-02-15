@@ -69,7 +69,6 @@
                         </div>
                     ';
                 } else {
-                    echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/home">หน้าหลัก</a></h1>';
                     echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/register">สมัครสมาชิก</a></h1>';
                     echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/login">เข้าสู่ระบบ</a></h1>';
                 }
