@@ -3,8 +3,8 @@
 class db {
     private $hostname = 'localhost';
     private $dbName = 'fp2025';
-    private $username = 'final';
-    private $password = 'FP2025';
+    private $username = 'root';
+    private $password = '';
 
     public function getConnection(): mysqli
     {

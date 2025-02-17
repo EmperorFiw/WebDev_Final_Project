@@ -6,4 +6,4 @@ foreach ($eventList as &$event) {
     $event['registered'] = $events->getRegistered($event['eid']);
 }
 
-renderView('home', ['data' => $eventList]); 
+renderView('home', ['data' => $eventList]);  
