@@ -52,3 +52,34 @@ function badRequest(string $message = 'Bad request'): void
     echo $message;
     exit;
 }
+
+function swalAlert(string $message, string $icon, string $page, string $redirect): void {
+    $title = ucfirst($icon);
+    $alertScript = "Swal.fire({
+        icon: '$icon',
+        title: '$title',
+        text: '$message',
+        confirmButtonText: 'ตกลง'
+    }).then(() => {
+        window.location.href = '/$redirect';
+    });";
+    renderView($page, ["alertScript" => $alertScript]);
+}
+
+function swalAlertWithData(string $message, string $icon, string $page, string $redirect, array $data): void {
+    $title = ucfirst($icon);
+    $alertScript = "Swal.fire({
+        icon: '$icon',
+        title: '$title',
+        text: '$message',
+        confirmButtonText: 'ตกลง'
+    }).then(() => {
+        window.location.href = '/$redirect';
+    });";
+
+    // ผนวก alertScript กับข้อมูลที่ส่งเข้ามาใน $data
+    $data[0]["alertScript"] = $alertScript;
+
+    renderView($page, $data);
+}
+

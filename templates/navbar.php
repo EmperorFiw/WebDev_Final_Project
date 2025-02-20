@@ -30,12 +30,12 @@
         <div class="r-box flex flex-cols cursor-pointer px-10">
             <?php 
                 echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/home">หน้าหลัก</a></h1>';
-                if (isLoggedIn()) {
+                if (!empty($_SESSION['username'])) {
                     $username = $_SESSION['username']; 
                     echo '
                         <div class="flex items-center relative">
                             <!-- ไอคอนผู้ใช้ -->
-                            <i class="fas fa-user-circle text-white text-3xl mr-3 cursor-pointer" onclick="openModal()"></i>
+                            <i class="fas fa-user-circle text-white text-3xl ml-4 mr-2 cursor-pointer" onclick="openModal()"></i>
                             
                             <!-- ชื่อผู้ใช้ -->
                             <span class="text-white text-lg font-semibold p-2 hover:text-blue-600 cursor-pointer" onclick="openModal()">' . htmlspecialchars($username) . '</span>
@@ -56,7 +56,7 @@
                                 
                                 <!-- ปุ่มออกจากระบบ -->
                                 <form action="/logout" method="POST" style="display:inline;">
-                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer w-full hover:bg-red-600">
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer w-full text-left hover:bg-red-600">
                                         <i class="fas fa-sign-out-alt mr-2"></i> ออกจากระบบ
                                     </button>
                                 </form>

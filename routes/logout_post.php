@@ -1,4 +1,5 @@
 <?php
-logout();
-header('Location: /login');
+session_unset();
+session_destroy();
+header("Location: /home");
 exit;

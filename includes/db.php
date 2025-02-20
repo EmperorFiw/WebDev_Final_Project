@@ -16,3 +16,7 @@ class db {
     }
     
 }
+
+require_once DATABASE_DIR. "/users.php";
+require_once DATABASE_DIR. "/events.php";
+require_once DATABASE_DIR. "/statistics.php";

@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-require_once DATABASE_DIR.'/events.php';
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     http_response_code(403);

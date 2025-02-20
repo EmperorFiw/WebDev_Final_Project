@@ -1,7 +1,5 @@
 <?php
 declare(strict_types=1);
-require_once INCLUDES_DIR . "/db.php"; 
-require_once DATABASE_DIR. "/users.php";
 
 class Events {
     private $db;
@@ -16,19 +14,16 @@ class Events {
     public function isOwnerEvent(string $username, int $eID): bool {       
         $query = "SELECT u.username 
                   FROM events e
-                  JOIN users u ON e.oID = u.ID
-                  WHERE e.ID = ? AND u.username = ?";
+                  JOIN users u ON e.owner_id = u.uid 
+                  WHERE e.eid = ? AND u.username = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('is', $eID, $username);
         $stmt->execute();
         $result = $stmt->get_result();
     
-        if ($result && $row = $result->fetch_assoc()) {
-            return true;
-        }
-    
-        return false;
+        return $result->num_rows > 0;
     }
+    
     
     public function isUserInEvent(string $uName, int $eID): bool {
         $uid = $this->users->getUserIDByName($uName);
@@ -129,7 +124,7 @@ class Events {
         return $result['total_registered'] ?? 0;
     }
     
-    function getEventData(string $keyword, string $date): array {
+    function getEventDataByKeyword(string $keyword, string $date): array {
         $conditions = [];
         
         if (!empty($keyword)) {
@@ -159,7 +154,7 @@ class Events {
         }
     }
 
-    public function getEventDetails(int $eid): array {
+    public function getEventData(int $eid): array {
         $query = "SELECT * FROM events WHERE eid = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $eid);
@@ -171,4 +166,88 @@ class Events {
             return [];
         }
     }
+    public function createEvent( string $event_name, int $ownerID, int $capacity, string $event_start_date, 
+        string $event_end_date, string $event_start_time, string $event_end_time, string $reg_start_date,
+        string $reg_end_date, string $details, string $imageData): string | int
+    {
+        if (!is_numeric($capacity) || $capacity <= 0) {
+            return "จำนวนผู้เข้าร่วมต้องมากกว่า 0";
+        }
+
+        // ป้องกัน XSS
+        $details = htmlspecialchars($details, ENT_QUOTES, 'UTF-8');
+
+        // ตรวจสอบว่า imageData เป็น string หรือไม่
+        $imagePathsString = is_array($imageData) ? implode(',', $imageData) : $imageData;
+
+        // ตรวจสอบวันที่ให้ถูกต้อง
+        if (!strtotime($event_start_date) || !strtotime($event_end_date) || 
+            !strtotime($reg_start_date) || !strtotime($reg_end_date)) {
+            return "รูปแบบวันที่ไม่ถูกต้อง";
+        }
+
+        // ตรวจสอบรูปแบบเวลา
+        if (!preg_match("/^([01]\d|2[0-3]):([0-5]\d)$/", $event_start_time) || 
+            !preg_match("/^([01]\d|2[0-3]):([0-5]\d)$/", $event_end_time)) {
+            return "รูปแบบเวลาต้องเป็น(ชั่วโมง:นาที) และชั่วโมงต้องอยู่ระหว่าง 00 ถึง 23";
+        }
+
+        // ตรวจสอบความถูกต้องของช่วงเวลา
+        if (strtotime($event_start_date) > strtotime($event_end_date)) {
+            return "วันที่เริ่มกิจกรรมต้องไม่มากกว่าวันที่สิ้นสุดกิจกรรม";
+        }
+
+        if (strtotime($reg_start_date) > strtotime($reg_end_date)) {
+            return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
+        }
+
+        if (strtotime($reg_start_date) < strtotime($event_start_date) || strtotime($reg_start_date) > strtotime($event_end_date)) {
+            return "วันที่เริ่มลงทะเบียนต้องอยู่ภายในช่วงวันที่กิจกรรม";
+        }
+
+        $query = "INSERT INTO events (event_name, owner_id, create_date, event_start_date, event_end_date, event_start_time, event_end_time, reg_start_date, reg_end_date, description, image, capacity) 
+            VALUES (?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("sissssssssi", $event_name, $ownerID, $event_start_date, $event_end_date, 
+                        $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, 
+                        $details, $imagePathsString, $capacity);
+
+
+        if ($stmt->execute()) {
+            $eventid = $this->conn->insert_id;
+            return $eventid;  // คืนค่า eventid
+        }
+        return "เกิดข้อผิดพลาดในการสร้างกิจกรรม";
+    }
+
+    function getOwnerEventData($username): array 
+    {
+        $oid = $this->users->getUserIDByName($username);
+    
+        $query = "SELECT * FROM events WHERE owner_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $oid);
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $events = [];
+            while ($row = $result->fetch_assoc()) {
+                $events[] = $row;
+            }
+            return $events;
+        } else {
+            return [];
+        }
+    }
+
+    function deleteEvent($eid): bool 
+    {
+        $stmt = $this->conn->prepare("DELETE FROM events WHERE eid = ?");
+        $stmt->bind_param("i", $eid);
+        $success = $stmt->execute();
+    
+        return $success;
+    }
+
 }

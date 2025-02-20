@@ -1,9 +1,10 @@
 <?php
-require_once DATABASE_DIR. '/events.php';
+declare(strict_types=1);
+
 $events = new Events();
 $eventList = $events->getAllEvents();
 foreach ($eventList as &$event) {
-    $event['registered'] = $events->getRegistered($event['eid']);
+    $event['registered'] = $events->getRegistered(intval($event['eid']));
 }
 
 renderView('home', ['data' => $eventList]);  

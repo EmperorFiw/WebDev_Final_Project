@@ -1,23 +1,32 @@
-
-<title>สถิติอายุและเพศ</title>
 <div class="statistics grid grid-cols-1 items-center justify-items-center min-h-[90vh]">
-    <h1 class="text-3xl text-left w-full text-white">สถิติผู้เข้าร่วม</h1> 
+    <?php if ($data['allMember'] > 0): ?>
+    <h1 class="text-3xl text-left w-full text-white px-10">สถิติผู้เข้าร่วม</h1> 
+    <div class="all-mem flex flex-col items-center justify-center space-y-4 h-auto flex-none mt-6">
+        <h1 class="text-3xl text-white text-center">สถิติโดยรวม</h1>
+        <h1 class="text-2xl text-white text-center"><?= $data['allMember'] ?> คน</h1>
+    <?php else: ?>
+    <div class="all-mem flex flex-col items-center justify-center space-y-4 h-auto flex-none">
+        <h1 class="text-2xl text-white text-center">ไม่มีข้อมูลผู้เข้าร่วม</h1>
+    <?php endif; ?>
+</div>
 
-    <div class="all-mem flex flex-col items-center justify-center space-y-0 h-auto flex-none">
-        <h1 class="text-3xl text-white">สถิติโดยรวม</h1>
-        <h1 class="text-2xl text-white"><?= $data['allMember']?> คน</h1>
-    </div>
 
-    <div class="st-con flex justify-evenly w-full gap-4">
-        <div class="st-l w-1/2 flex flex-col items-center justify-center space-y-1">
+    <?php if ($data['allMember'] > 0): ?>
+    <div class="st-con flex flex-col md:flex-row justify-evenly w-full gap-4 mt-6">
+        <div class="st-l flex flex-col items-center justify-center space-y-1">
             <h1 class="text-center text-2xl text-white">สถิติอายุ</h1>
-            <canvas id="ageChart"></canvas>
+            <div class="w-[400px] h-[400px]">
+                <canvas id="ageChart" width="400" height="400"></canvas>
+            </div>
         </div>
-        <div class="st-r w-1/2 flex flex-col items-center justify-center space-y-1">
+        <div class="st-r flex flex-col items-center justify-center space-y-1">
             <h1 class="text-center text-2xl text-white">สถิติเพศ</h1>
-            <canvas id="genderChart"></canvas> 
+            <div class="w-[400px] h-[400px]">
+                <canvas id="genderChart" width="400" height="400"></canvas>
+            </div>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 
@@ -38,13 +47,11 @@
                 }]
             },
             options: {
-                responsive: false,
-                maintainAspectRatio: false,
+                responsive: false, // ใช้ขนาด canvas ตามที่ระบุไว้
+                maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        labels: {
-                            color: "white"
-                        }
+                        labels: { color: "white" }
                     }
                 }
             }
@@ -62,17 +69,13 @@
             },
             options: {
                 responsive: false,
-                maintainAspectRatio: false,
+                maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        labels: {
-                            color: "white"
-                        }
+                        labels: { color: "white" }
                     }
                 }
             }
         });
     });
 </script>
-
-

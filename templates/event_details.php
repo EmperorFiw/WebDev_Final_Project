@@ -64,8 +64,8 @@ if (isset($data['data']) && !empty($data['data'])):
                 </p>
             </div>
             <div class="flex justify-between items-center px-4 mt-4">
-                <form action="/login" method="GET">
-                    <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-2xl bg-blue-400 hover:bg-blue-500"><?= isLoggedIn() ? 'ลงทะเบียน' : 'เข้าสู่ระบบ'?></button>
+                <form action="<?= !empty($_SESSION['username']) ? '/reg_event' : '/login' ?>" method="<?= !empty($_SESSION['username']) ? 'POST' : 'GET' ?>">
+                    <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-2xl bg-blue-400 hover:bg-blue-500"><?= !empty($_SESSION['username']) ? 'ลงทะเบียน' : 'เข้าสู่ระบบ'?></button>
                 </form>
                 <form action="/home" method="GET">
                     <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-2xl bg-gray-600 hover:bg-gray-700">ย้อนกลับ</button>
