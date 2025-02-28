@@ -4,7 +4,8 @@
 <Title>EDIT ACTIVITIES</Title>
 <div class="container mx-auto p-8 flex justify-center">
     <div class="bg-[#301580] p-6 rounded-lg w-full max-w-5xl flex"> 
-        <form action="" method="POST" enctype="multipart/form-data" class="flex w-full">
+        <form action="/edit_event" method="POST" enctype="multipart/form-data" class="flex w-full">
+            <input type="hidden" name="event_id" value="<?= htmlspecialchars($event['eid']) ?>">
             <div class="w-3/4 pr-4">
                 <h2 class="text-3xl font-bold mb-6">แก้ไขกิจกรรม</h2> 
                 <div class="grid gap-6 mb-4 md:grid-cols-2">
@@ -52,8 +53,8 @@
                 <textarea name="details" class="p-2 rounded-lg bg-[#D9D9D9] w-full h-[150px] text-black"><?= htmlspecialchars($event['description'] ?? 'รายละเอียดกิจกรรม') ?></textarea>
 
                 <div class="mt-auto w-full">
-                    <button type="button" class="bg-[#0A7500] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#1e7e34] transition">ยืนยัน</button>
-                    <button type="button" class="bg-[#424242] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#343a40] transition">ย้อนกลับ</button>
+                    <button type="submit" class="bg-[#0A7500] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#1e7e34] transition">ยืนยัน</button>
+                    <button type="submit" class="bg-[#424242] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#343a40] transition">ย้อนกลับ</button>
                 </div>
 
             </div>
@@ -70,7 +71,7 @@
                 </div>
                 <label class="cursor-pointer bg-[#301580] mt-8 p-2 rounded-lg w-full text-center text-white font-bold hover:bg-[#151541] transition">
                     เพิ่มรูปภาพ
-                    <input type="file" id="image-input" name="image" class="hidden" multiple>
+                    <input type="file" id="image-input" name="image[]" class="hidden" multiple>
                 </label>
                 <button id="delete-image" type="button" class="bg-[#750002] mt-3 p-2 rounded-lg w-full text-white font-bold hover:bg-red-700 transition">ลบรูปภาพ</button>
             </div>
@@ -79,3 +80,8 @@
 <div> 
 
 <script src="/assets/js/uploadImage.js"></script>
+<?php if (isset($data['alertScript'])): ?>
+    <script>
+        <?= $data['alertScript']?>
+    </script>
+<?php endif; ?>

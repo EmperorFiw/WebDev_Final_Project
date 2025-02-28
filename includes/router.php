@@ -65,16 +65,35 @@ function swalAlert(string $message, string $icon, string $page, string $redirect
     });";
     renderView($page, ["alertScript" => $alertScript]);
 }
-
 function swalAlertWithData(string $message, string $icon, string $page, string $redirect, array $data): void {
     $title = ucfirst($icon);
+
+    // ตรวจสอบว่า redirect มีคำว่า '_parameter' และตัดออก
+    $redirectWithParameter = (strpos($redirect, '_parameter') !== false);
+    if ($redirectWithParameter) {
+        // ตัด '_parameter' ออกจากข้อความ
+        $redirect = str_replace('_parameter', '', $redirect);
+    }
+    
     $alertScript = "Swal.fire({
         icon: '$icon',
         title: '$title',
         text: '$message',
         confirmButtonText: 'ตกลง'
-    }).then(() => {
-        window.location.href = '/$redirect';
+    }).then(() => {";
+
+    // หาก redirect มี '_parameter' ให้ส่ง query string ไปด้วย
+    if ($redirectWithParameter) {
+        $alertScript .= "
+            window.location.href = '/$redirect' + window.location.search;
+        ";
+    } else {
+        $alertScript .= "
+            window.location.href = '/$redirect';
+        ";
+    }
+
+    $alertScript .= "
     });";
 
     // ผนวก alertScript กับข้อมูลที่ส่งเข้ามาใน $data
@@ -82,4 +101,3 @@ function swalAlertWithData(string $message, string $icon, string $page, string $
 
     renderView($page, $data);
 }
-

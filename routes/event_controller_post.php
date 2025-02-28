@@ -4,13 +4,13 @@ declare(strict_types=1);
 $action = $_POST['action'] ?? '';
 $eid = $_POST['eid'] ?? '';
 $uname = $_SESSION['username'];
+$events = new Events();
+$users = new Users();
 
 if (!empty($action))
 {
     if (!empty($eid))
     {
-        $events = new Events();
-        $users = new Users();
         $eid = intval($eid);
 
         if (!$events->isOwnerEvent($uname, $eid))
@@ -20,7 +20,9 @@ if (!empty($action))
         }
 
         $eventData = $events->getOwnerEventData($uname);
-
+        if (isset($eventData[0])) {
+            $eventData = $eventData[0];  // เลือกแถวแรก
+        }
         switch($action)
         {
             case "approve":
@@ -71,10 +73,13 @@ if (!empty($action))
                     if (result.isConfirmed) {
                         document.getElementById('deleteForm').submit();
                     }
+                    else {
+                        window.location.href = '/my_events';
+                    }
                 });";
                 
-                $eventData[0]['alertScript'] = $alertScript;
-                $eventData[0]['deleteID'] = $eid;
+                $eventData['alertScript'] = $alertScript;
+                $eventData['deleteID'] = $eid;
 
                 renderView("my_events_get", $eventData);
             
@@ -85,6 +90,9 @@ if (!empty($action))
     else
     {
         $eventData = $events->getOwnerEventData($uname);
+        if (isset($eventData[0])) {
+            $eventData = $eventData[0];  // เลือกแถวแรก
+        }
         renderView("my_events_get", $eventData);
     }
 }

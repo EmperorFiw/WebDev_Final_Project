@@ -7,6 +7,9 @@ class Users {
     public function __construct() {
         $this->db = new DB();
         $this->conn = $this->db->getConnection();
+    }    
+    function getName(): string {       
+        return $_SESSION['username'];
     }
     function getUserIDByName(string $uName): int {       
         $query = "SELECT uid 

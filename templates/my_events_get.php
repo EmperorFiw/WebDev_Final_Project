@@ -1,4 +1,7 @@
+<?php
+// print_r($data);
 
+?>
 <title>My Events</title>
 <div class="container mx-auto p-4">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4 px-10 py-2">
@@ -73,13 +76,13 @@
     <?php endif; ?>
 </div>
 
-<?php if (isset($data[0]['alertScript'])): ?>
-    <?php if (isset($data[0]['deleteID'])): ?>
+<?php if (isset($data['alertScript'])): ?>
+    <?php if (isset($data['deleteID'])): ?>
     <form id="deleteForm" action="delete_event" method="POST" class="hidden">
-        <input type="hidden" name="eid" value="<?= $data[0]['deleteID'] ?>">
+        <input type="hidden" name="eid" value="<?= $data['deleteID'] ?>">
     </form>
     <?php endif; ?>
     <script>
-        <?= $data[0]['alertScript']?>
+        <?= $data['alertScript']?>
     </script>
 <?php endif; ?>

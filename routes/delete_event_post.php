@@ -18,7 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $events = new Events();
             $result = $events->deleteEvent($eid);
             $eventData = $events->getEventData($eid);
-
+            if (isset($eventData[0])) {
+                $eventData = $eventData[0];  // เลือกแถวแรก
+            }
             if (!$result)
             {
                 swalAlertWithData('เกิดข้อผิดพลาด', 'error', 'my_events_get', 'my_events', $eventData);
