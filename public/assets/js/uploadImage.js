@@ -41,6 +41,13 @@ function handleFiles(files) {
 addImg.addEventListener('click', function() {
     imageInput.click();
 });
+function prevImage(event) {
+    event.stopPropagation(); // ป้องกัน event เด้งไป triggerFileInput()
+}
+
+function nextImage(event) {
+    event.stopPropagation(); // ป้องกัน event เด้งไป triggerFileInput()
+}
 
 function updateImage() {
     if (imageList.length > 0) {
