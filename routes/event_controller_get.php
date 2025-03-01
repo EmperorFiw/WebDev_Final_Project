@@ -51,6 +51,10 @@ if (!empty($action)) {
 
             case "edit":
                 if (!empty($eventData)) {
+                    $eventData = $events->getEventDataByID($eid);
+                    if (isset($eventData[0])) {
+                        $eventData = $eventData[0];
+                    }
                     renderView('edit_event_get', $eventData);
                 } else {
                     swalAlert('ไม่พบข้อมูล', 'error', 'edit_event_get', 'home');

@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $imageData[] = $filePath; // เก็บเส้นทางไฟล์ที่อัปโหลด
                     }
                 } else {
-                    // ถ้าไม่ใช่ไฟล์ภาพจริงๆ
                     swalAlertWithData('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'edit_event_get', 'edit_event', $eventData, true);
                 }
             }
@@ -59,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $users = new Users();
         $max_participants = intval($max_participants);
         $ownerID = $users->getUserIDByName($_SESSION['username']);
-        // ใช้ฟังก์ชัน updateEvent แทน createEvent
         $result = $events->updateEvent($event_id, $event_name, $ownerID, $max_participants, $event_start_date, $event_end_date, 
                                        $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, $details, $imagePathsString);
 
