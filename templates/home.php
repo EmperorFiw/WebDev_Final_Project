@@ -1,3 +1,7 @@
+<?php
+$events_history = $data['historyData'];
+// print_r($events_history);
+?>
 
 <title>Home</title>
 <form action="/home" method="POST">
@@ -20,6 +24,40 @@
     </div>
 </form>
 
+<!-- ประวัติเข้าร่วม  -->
+<?php if (!empty($events_history) && !empty($_SESSION['username'])):?>
+<div class="container px-10 mt-4 p-4 ">
+    <!-- Table Header -->
+    <table class="min-w-full table-auto border-collapse bg-white shadow-lg">
+        <thead>
+            <tr class="bg-[#301580] text-white">
+                <th class="px-4 py-2 text-center">กิจกรรมที่ขอเข้าร่วม</th>
+                <th class="px-4 py-2 text-center">สถานะ</th>
+            </tr>
+        </thead>
+        <tbody id="eventTableBody" class="bg-[#B5CFF8]">
+
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="mt-4 flex justify-between items-center text-white">
+        <div class="page">
+            <span id="pageNumber" class="text-lg">หน้า 1</span>
+            <span id="totalPages" class="text-lg">จาก <?= $data['totalPages'] ?> หน้า</span>
+        </div>
+        <div class="prevbtn">
+            <button id="prevPage" class="bg-[#301580] text-white px-4 py-2 rounded-lg hover:bg-blue-700" disabled>
+                ก่อนหน้า
+            </button>
+            <button id="nextPage" class="bg-[#301580] text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                ถัดไป
+            </button>
+        </div>
+    </div>
+</div>
+<?php endif;?>
+<!-- ข้อมูลกิจกรรม  -->
 <div class="mt-8">
     <div class="relative flex items-center px-10">
         <i class="fas fa-bullhorn text-xl text-[#B5CFF8] mr-2"></i>
@@ -81,3 +119,94 @@
     ?>
 </div>
 <script src="/assets/js/slide.js"></script>
+
+<!-- script ประวัติ  -->
+<script>
+// PHP Data for events
+const events_history = <?php echo json_encode($events_history); ?>;
+
+let currentPage = 1;
+const eventsPerPage = 5;
+
+// Function to render table data
+function renderTable() {
+    const start = (currentPage - 1) * eventsPerPage;
+    const end = start + eventsPerPage;
+    const currentEvents = events_history ? events_history.slice(start, end) : [];
+
+    const tableBody = document.getElementById("eventTableBody");
+    tableBody.innerHTML = "";
+
+    currentEvents.forEach(event => {
+        const row = document.createElement("tr");
+        row.classList.add("border-b");
+
+        const nameCell = document.createElement("td");
+        nameCell.classList.add("px-4", "py-2", "text-left", "text-black");
+        nameCell.textContent = event.event_name;
+        row.appendChild(nameCell);
+
+        const statusCell = document.createElement("td");
+        statusCell.classList.add("px-4", "py-2", "text-center");
+        // สร้างปุ่ม
+        const statusButton = document.createElement("button");
+        statusButton.classList.add("w-1/3", "px-4", "py-2", "text-center", "rounded-2xl", "text-white");
+
+        switch (event.join_state) {
+            case 0:
+                statusText = "รอดำเนินการ";
+                statusColor = "bg-yellow-500"; // สีเหลืองสำหรับรอดำเนินการ
+                break;
+            case 1:
+                statusText = "อนุมัติ";
+                statusColor = "bg-green-500"; // สีน้ำเงินสำหรับอนุมัติ
+                break;
+            case 2:
+                statusText = "กิจกรรมจบแล้ว";
+                statusColor = "bg-green-500"; // สีเขียวสำหรับเสร็จสิ้น
+                break;
+            case 3:
+                statusText = "ไม่ได้เข้าร่วม";
+                statusColor = "bg-red-500"; // สีแดงสำหรับไม่ได้เข้าร่วม
+                break;
+            case 4:
+                statusText = "ถูกปฏิเสธ";
+                statusColor = "bg-red-500"; // สีเทาสำหรับถูกปฏิเสธ
+                break;
+            default:
+                statusText = "ไม่ทราบสถานะ";
+                statusColor = "bg-gray-500"; // สีเทาสำหรับสถานะไม่ทราบ
+        }
+        statusButton.textContent = statusText;
+        statusButton.classList.add(statusColor);  // เพิ่มคลาสสีที่เลือก
+        // เพิ่มปุ่มลงใน statusCell
+        statusCell.appendChild(statusButton);
+        row.appendChild(statusCell);
+        tableBody.appendChild(row);
+    });
+
+    // Update page number
+    document.getElementById("pageNumber").textContent = `หน้า ${currentPage}`;
+
+    // Handle pagination buttons
+    document.getElementById("prevPage").disabled = currentPage === 1;
+    document.getElementById("nextPage").disabled = currentPage * eventsPerPage >= events_history.length;
+}
+
+// Handle next and previous page buttons
+document.getElementById("prevPage").addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+    }
+});
+
+document.getElementById("nextPage").addEventListener("click", () => {
+    if (currentPage * eventsPerPage < events_history.length) {
+        currentPage++;
+        renderTable();
+    }
+});
+
+renderTable();
+</script>

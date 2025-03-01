@@ -89,7 +89,7 @@ function swalAlertWithData(string $message, string $icon, string $page, string $
     });";
 
     // ผนวก alertScript กับข้อมูลที่ส่งเข้ามาใน $data
-    $data[0]["alertScript"] = $alertScript;
+    $data["alertScript"] = $alertScript;
 
     renderView($page, $data);
 }

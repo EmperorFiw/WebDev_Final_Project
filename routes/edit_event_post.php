@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // แปลง event_id เป็น integer
         $event_id = (int)$event_id;
         $events = new Events();
-        $eventData = $events->getEventData($event_id);
+        $eventData = $events->getEventDataByID($event_id);
         if (isset($eventData[0])) {
             $eventData = $eventData[0];  // เลือกแถวแรก
         }

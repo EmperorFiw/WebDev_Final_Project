@@ -70,8 +70,8 @@
 <div> 
 
 <script src="/assets/js/uploadImage.js"></script>
-<?php if (isset($data[0]['alertScript'])): ?>
+<?php if (isset($data['alertScript'])): ?>
     <script>
-        <?= $data[0]['alertScript']?>
+        <?= $data['alertScript']?>
     </script>
 <?php endif; ?>

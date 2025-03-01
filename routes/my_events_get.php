@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 $events = new Events();
 $username = $_SESSION['username'];
-$eventData = $events->getOwnerEventData($username);
+$eventData = $events->getOwnerEventDataByUserName($username);
 
 if (!isset($_SESSION['selected_event'])) {
     $_SESSION['selected_event'] = '';

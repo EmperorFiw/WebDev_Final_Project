@@ -154,7 +154,7 @@ class Events {
         }
     }
 
-    public function getEventData(int $eid): array {
+    public function getEventDataByID(int $eid): array {
         $query = "SELECT * FROM events WHERE eid = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $eid);
@@ -298,7 +298,7 @@ class Events {
         return "เกิดข้อผิดพลาดในการอัพเดทกิจกรรม";
     }
 
-    public function getOwnerEventData($username): array 
+    public function getOwnerEventDataByUserName($username): array 
     {
         $oid = $this->users->getUserIDByName($username);
     
@@ -353,5 +353,39 @@ class Events {
         return "เกิดข้อผิดพลาดในการลงทะเบียนกิจกรรม";
     }
 
+    public function getParticipantsByEventID(int $eid): array
+    {
+        $stmt = $this->conn->prepare("
+        SELECT h.*, e.event_name 
+        FROM history h
+        JOIN events e ON h.eid = e.eid
+        WHERE h.eid = ? AND h.join_state = 0
+    ");
+        $stmt->bind_param("i", $eid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function updateUserJoinState(int $eid, int $uid, int $state): string
+    {
+        $uname = $this->users->getUserNameByID($uid);
+        
+        $join_state = ($state === 1) ? 1 : 4;
+        $stmt = $this->conn->prepare("UPDATE history SET join_state = ? WHERE uid = ? AND eid = ?");
+        $stmt->bind_param("iii", $join_state, $uid, $eid);
+    
+        if ($stmt->execute()) {
+            if ($state === 0) {
+                return "ปฎิเสธผู้ใช้ " . $uname . " สำเร็จ!";
+            } elseif ($state === 1) {
+                return "อนุมัติผู้ใช้ " . $uname . " สำเร็จ!";
+            }
+        }
+    
+        return "เกิดข้อผิดพลาดในการอัปเดต!";
+    }
+    
     
 }

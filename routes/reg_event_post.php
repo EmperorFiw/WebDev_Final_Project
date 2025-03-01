@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $events = new Events();
     $user = new Users();
 
-    $eventData = $events->getEventData($eid);
+    $eventData = $events->getEventDataByID($eid);
     if (isset($eventData[0])) {
         $eventData = $eventData[0];
     }

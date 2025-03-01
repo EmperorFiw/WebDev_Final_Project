@@ -33,9 +33,9 @@ class Statistic {
             }
     
             $gender = $row['gender'];
-            if ($gender == 'Male') {
+            if ($gender == 'ชาย') {
                 $genderData[0]++;  // ชาย
-            } elseif ($gender == 'Female') {
+            } elseif ($gender == 'หญิง') {
                 $genderData[1]++;  // หญิง
             }
         }

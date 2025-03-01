@@ -8,10 +8,12 @@ class Users {
         $this->db = new DB();
         $this->conn = $this->db->getConnection();
     }    
-    function getName(): string {       
+    public function getName(): string {   
+        if (!isset($_SESSION['username']))
+            $_SESSION['username'] = '';    
         return $_SESSION['username'];
     }
-    function getUserIDByName(string $uName): int {       
+    public function getUserIDByName(string $uName): int {       
         $query = "SELECT uid 
                   FROM users
                   WHERE username = ?";
@@ -27,7 +29,7 @@ class Users {
         return -1;
     }
     
-    function getNameByID(int $uID): string {       
+    public function getUserNameByID(int $uID): string {       
         $query = "SELECT username 
                   FROM users
                   WHERE uid = ?";
@@ -40,17 +42,17 @@ class Users {
             return $row['username'];
         }
     
-        return "NULL";
+        return "";
     }
     
-    function updateUsersInt(string $column, int $values, int $uid): bool {
+    public function updateUsersInt(string $column, int $values, int $uid): bool {
         $query = "UPDATE users SET $column = ? WHERE uid = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("ii",$values, $uid);
         return $stmt->execute();
     }    
     
-    function isUsernameExiting(string $username): bool
+    public function isUsernameExiting(string $username): bool
     {
         $conn = $this->db->getConnection();
         $sql = "SELECT * FROM users WHERE username = ?";
@@ -63,7 +65,7 @@ class Users {
     }
     
 
-    function isEmailExiting(string $email): bool
+    public function isEmailExiting(string $email): bool
     {
         $sql = "SELECT * FROM users WHERE email = ?";
         $stmt = $this->conn->prepare($sql);
@@ -73,7 +75,7 @@ class Users {
         $stmt->store_result();
         return $stmt->num_rows > 0;
     }
-    function register($username, $password, $email, $phone): string
+    public function register(string $username, string $password, string $email, string $phone): string
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "รูปแบบอีเมลไม่ถูกต้อง";
@@ -103,7 +105,7 @@ class Users {
         }
     }
     
-    function login($username, $password): string
+    public function login(string $username, string $password): string
     {
         $sql = "SELECT * FROM users WHERE username = ?";
         $stmt = $this->conn->prepare($sql);
@@ -124,6 +126,45 @@ class Users {
             return "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
         }
     }
+    public function getEventHistory(int $uid) : array
+    {
+        $sql = "SELECT e.event_name, h.join_state 
+                FROM history h
+                INNER JOIN events e ON h.eid = e.eid
+                WHERE h.uid = ?";
     
-
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $uid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+    
+        return $data;
+    }
+    public function userApprovalStatus(int $uid, int $eid): int
+    {
+        // Prepare SQL statement with parentheses for correct logical order
+        $sql = "SELECT * FROM history WHERE uid = ? AND eid = ? AND (join_state = 1 OR join_state = 4)";
+        $stmt = $this->conn->prepare($sql);
+    
+        // Check for prepare statement error
+        if ($stmt === false) {
+            echo "Error preparing statement: " . $this->conn->error;
+            return -1;  // Return error code if prepare fails
+        }
+    
+        // Bind parameters and execute
+        $stmt->bind_param("ii", $uid, $eid);
+        $stmt->execute();
+    
+        // Get the result
+        $result = $stmt->get_result();
+    
+        // Return if rows exist (true if there are rows, false if not)
+        return $result->num_rows > 0 ? 1 : 0;  // 1 for found, 0 for not found
+    }
 }

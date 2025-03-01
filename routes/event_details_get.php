@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     }
     $event_id = (int)$event_id;
     $events = new Events();
-    $event_details = $events->getEventData($event_id);
+    $event_details = $events->getEventDataByID($event_id);
 
     if (!empty($event_details)) {
         $event_details[0]['registered'] = $events->getTotalRegistered($event_id);

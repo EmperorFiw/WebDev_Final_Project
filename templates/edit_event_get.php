@@ -54,7 +54,7 @@
 
                 <div class="mt-auto w-full">
                     <button type="submit" class="bg-[#0A7500] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#1e7e34] transition">ยืนยัน</button>
-                    <button type="submit" class="bg-[#424242] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#343a40] transition">ย้อนกลับ</button>
+                    <button type="button" onclick="btnBack()" class="bg-[#424242] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#343a40] transition">ย้อนกลับ</button>
                 </div>
 
             </div>
@@ -85,3 +85,10 @@
         <?= $data['alertScript']?>
     </script>
 <?php endif; ?>
+
+<script>
+function btnBack() {
+    window.location.href = 'my_events';
+}
+
+</script>
