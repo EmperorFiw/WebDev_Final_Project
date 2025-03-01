@@ -64,7 +64,10 @@ if (isset($data['data']) && !empty($data['data'])):
                 </p>
             </div>
             <div class="flex justify-between items-center px-4 mt-4">
-                <form action="<?= !empty($_SESSION['username']) ? '/reg_event' : '/login' ?>" method="<?= !empty($_SESSION['username']) ? 'POST' : 'GET' ?>">
+                <form action="<?= !empty($_SESSION['username']) ? '/reg_event' : '/login' ?>" method="GET">
+                    <input type="hidden" name="eid" value="<?= htmlspecialchars($event['eid']); ?>">
+                    <input type="hidden" name="name" value="<?= htmlspecialchars($event['event_name']); ?>">
+                    <input type="hidden" name="image" value="<?= htmlspecialchars($event['image']); ?>">
                     <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-2xl bg-blue-400 hover:bg-blue-500"><?= !empty($_SESSION['username']) ? 'ลงทะเบียน' : 'เข้าสู่ระบบ'?></button>
                 </form>
                 <form action="/home" method="GET">

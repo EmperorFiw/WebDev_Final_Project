@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 } else {
                     // ถ้าไม่ใช่ไฟล์ภาพจริงๆ
-                    swalAlertWithData('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'edit_event_get', 'edit_event', $eventData);
+                    swalAlertWithData('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'edit_event_get', 'edit_event', $eventData, true);
                 }
             }
 
@@ -64,12 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                        $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, $details, $imagePathsString);
 
         if ($result === 'แก้ไขกิจกรรมสำเร็จ!') {
-            swalAlertWithData($result, 'success', 'edit_event_get', 'my_events_parameter', $eventData);
+            swalAlertWithData($result, 'success', 'edit_event_get', 'my_events', $eventData, true);
         } elseif (is_string($result)) {
-            swalAlertWithData($result, 'error', 'edit_event_get', 'my_events_parameter', $eventData);
+            swalAlertWithData($result, 'error', 'edit_event_get', 'my_events', $eventData, true);
         }
     } else {
-        swalAlertWithData('ข้อมูลไม่ครบถ้วน', 'error', 'edit_event_get', 'my_events_parameter', $eventData);
+        swalAlertWithData('ข้อมูลไม่ครบถ้วน', 'error', 'edit_event_get', 'my_events', $eventData, true);
     }
 }
 

@@ -58,7 +58,7 @@
                                     <?= (isset($_SESSION['selected_event']) && $_SESSION['selected_event'] == $event['eid']) ? 'เลือกแล้ว' : 'เลือก' ?>
                                 </button>
                             </form>
-                            <form action="/event_details" method="POST">
+                            <form action="/event_details" method="GET">
                                 <input type="hidden" name="eid" value="<?= (int) $event['eid'] ?>">
                                 <button type="submit" class="flex items-center gap-2 bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-600 transition">
                                     <i class="fas fa-info-circle"></i> รายละเอียด

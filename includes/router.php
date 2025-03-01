@@ -65,16 +65,8 @@ function swalAlert(string $message, string $icon, string $page, string $redirect
     });";
     renderView($page, ["alertScript" => $alertScript]);
 }
-function swalAlertWithData(string $message, string $icon, string $page, string $redirect, array $data): void {
+function swalAlertWithData(string $message, string $icon, string $page, string $redirect, array $data, bool $storeData): void {
     $title = ucfirst($icon);
-
-    // ตรวจสอบว่า redirect มีคำว่า '_parameter' และตัดออก
-    $redirectWithParameter = (strpos($redirect, '_parameter') !== false);
-    if ($redirectWithParameter) {
-        // ตัด '_parameter' ออกจากข้อความ
-        $redirect = str_replace('_parameter', '', $redirect);
-    }
-    
     $alertScript = "Swal.fire({
         icon: '$icon',
         title: '$title',
@@ -82,8 +74,8 @@ function swalAlertWithData(string $message, string $icon, string $page, string $
         confirmButtonText: 'ตกลง'
     }).then(() => {";
 
-    // หาก redirect มี '_parameter' ให้ส่ง query string ไปด้วย
-    if ($redirectWithParameter) {
+    // ให้ส่ง query string ไปด้วย
+    if ($storeData) {
         $alertScript .= "
             window.location.href = '/$redirect' + window.location.search;
         ";

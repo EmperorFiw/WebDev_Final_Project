@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         renderView('home', ['not_found' => 1]);
     } else {
         foreach ($eventList as &$event) {
-            $event['registered'] = $events->getRegistered(intval($event['eid']));
+            $event['registered'] = $events->getTotalRegistered(intval($event['eid']));
         }
         renderView('home', ['data' => $eventList]);
     }

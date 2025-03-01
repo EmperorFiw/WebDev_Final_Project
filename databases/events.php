@@ -115,7 +115,7 @@ class Events {
         }
     }
     
-    public function getRegistered(int $eid): int {
+    public function getTotalRegistered(int $eid): int {
         $query = "SELECT COUNT(*) AS total_registered FROM history WHERE eid = ? AND join_state = 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $eid);
@@ -298,7 +298,7 @@ class Events {
         return "เกิดข้อผิดพลาดในการอัพเดทกิจกรรม";
     }
 
-    function getOwnerEventData($username): array 
+    public function getOwnerEventData($username): array 
     {
         $oid = $this->users->getUserIDByName($username);
     
@@ -319,7 +319,7 @@ class Events {
         }
     }
 
-    function deleteEvent($eid): bool 
+    public function deleteEvent(int $eid): bool 
     {
         $stmt = $this->conn->prepare("DELETE FROM events WHERE eid = ?");
         $stmt->bind_param("i", $eid);
@@ -327,5 +327,31 @@ class Events {
     
         return $success;
     }
+    public function isRegisteredEvent(int $uid, int $eid) : bool
+    {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM history WHERE uid = ? AND eid = ?");
+        $stmt->bind_param("ii", $uid, $eid);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+    
+        return $count > 0;
+    }
 
+    public function registerEvent(int $uid, int $eid, string $fname, string $lname, string $phone, int $age, string $gender, string $role): string
+    {
+        if ($this->isRegisteredEvent($uid, $eid))
+        {
+            return "คุณลงทะเบียนไปแล้ว!";
+        }
+        $stmt = $this->conn->prepare("INSERT INTO history (uid, eid, firstname, lastname, date_join, age, gender, tel, type) VALUES (?, ?, ?, ?, NOW(), ?, ?, ?, ?)");
+        $stmt->bind_param("iississs", $uid, $eid, $fname, $lname, $age, $gender, $phone, $role);
+        if ($stmt->execute())
+        {
+            return "ลงทะเบียนสำเร็จ!";
+        }
+        return "เกิดข้อผิดพลาดในการลงทะเบียนกิจกรรม";
+    }
+
+    
 }

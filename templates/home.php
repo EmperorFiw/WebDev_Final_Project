@@ -68,7 +68,7 @@
             <p class="mt-4 text-sm">จำนวนที่รับ <?= htmlspecialchars($event['capacity']); ?></p>
             <p class="mt-4 text-sm">ลงทะเบียนแล้ว <?= htmlspecialchars($event['registered']); ?></p>
             <div class="flex justify-center items-center mt-4">
-                <form action="/event_details" method="POST">
+                <form action="/event_details" method="GET">
                     <input type="hidden" name="eid" value="<?= $event['eid'] ?>">
                     <button class="mt-4 bg-[#151541] text-white px-4 py-2 rounded-lg hover:bg-blue-600">รายละเอียด</button>
                 </form>
