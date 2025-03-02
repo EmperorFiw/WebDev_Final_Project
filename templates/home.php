@@ -5,58 +5,61 @@ $events_history = $data['historyData'];
 
 <title>Home</title>
 <form action="/home" method="POST">
-    <div class="w-full grid grid-cols-3 gap-4 px-10 py-4">
+    <div class="w-full flex justify-between items-center px-10 py-4">
         <div class="left">
-            <h1 class="text-xl font-semibold">กิจกรรม</h1>
+            <h1 class="text-xl font-semibold">กิจกรรม</h1> 
         </div>
-        <div class="center flex items-center justify-end">
-            <div class="relative w-full">
-                <input type="text" name="keyword" placeholder="ค้นหากิจกรรม" class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full pr-10">
+        <div class="center flex items-center space-x-2">
+            <div class="relative w-full max-w-sm">
+                <input type="text" name="keyword" placeholder="ค้นหากิจกรรม"
+                    class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full pr-10">
                 <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
                     <i class="fas fa-search"></i>
                 </span>
             </div>
-        </div>
-        <div class="right flex items-center space-x-2">
-            <input type="date" name="date" class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all rounded-md pr-10">
+            <input type="date" name="date"
+                class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all pr-10">
             <button class="bg-[#301580] text-white px-4 py-2 rounded-2xl hover:bg-blue-600">ค้นหา</button>
         </div>
     </div>
 </form>
 
 <!-- ประวัติเข้าร่วม  -->
-<?php if (!empty($events_history) && !empty($_SESSION['username'])):?>
-<div class="container px-10 mt-4 p-4 ">
+<?php if (!empty($events_history) && !empty($_SESSION['username'])): ?>
+<div class="container mx-auto px-10 mt-4 p-4 flex flex-col items-center">
     <!-- Table Header -->
-    <table class="min-w-full table-auto border-collapse bg-white shadow-lg">
+    <table class="min-w-full table-auto border-collapse bg-white shadow-lg text-center">
         <thead>
             <tr class="bg-[#301580] text-white">
-                <th class="px-4 py-2 text-center">กิจกรรมที่ขอเข้าร่วม</th>
-                <th class="px-4 py-2 text-center">สถานะ</th>
+                <th class="px-6 py-3 text-start ">กิจกรรมที่ขอเข้าร่วม</th>
+                <th class="px-6 py-3">สถานะ</th>
             </tr>
         </thead>
         <tbody id="eventTableBody" class="bg-[#B5CFF8]">
-
         </tbody>
     </table>
 
     <!-- Pagination -->
-    <div class="mt-4 flex justify-between items-center text-white">
-        <div class="page">
-            <span id="pageNumber" class="text-lg">หน้า 1</span>
-            <span id="totalPages" class="text-lg">จาก <?= $data['totalPages'] ?> หน้า</span>
+    <div class="mt-3 grid grid-cols-3 items-center w-full text-white">
+        <div class="page text-lg text-start">
+            <span id="pageNumber">หน้า <?= $data['currentPage'] ?></span>
+            <span id="totalPages">จาก <?= $data['totalPages'] ?> หน้า</span>
         </div>
-        <div class="prevbtn">
-            <button id="prevPage" class="bg-[#301580] text-white px-4 py-2 rounded-lg hover:bg-blue-700" disabled>
+
+        <div></div> <!-- ไม่ต้องลบ สร้างเอา position -->
+    
+        <div class="flex justify-end gap-2">
+            <button id="prevPage" class="bg-[#301580] text-white px-5 py-2 rounded-lg hover:bg-blue-700" disabled>
                 ก่อนหน้า
             </button>
-            <button id="nextPage" class="bg-[#301580] text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <button id="nextPage" class="bg-[#301580] text-white px-5 py-2 rounded-lg hover:bg-blue-700">
                 ถัดไป
             </button>
         </div>
     </div>
 </div>
-<?php endif;?>
+<?php endif; ?>
+
 <!-- ข้อมูลกิจกรรม  -->
 <div class="mt-8">
     <div class="relative flex items-center px-10">
@@ -77,15 +80,15 @@ $events_history = $data['historyData'];
         <div class="relative w-full h-[272px]">
             <div class="carousel relative">
                 <div class="carousel-inner relative overflow-hidden w-full">
-                    <?php
-                        $images = explode(',', $event['image']); 
-                        foreach ($images as $index => $image) {
-                            $activeClass = ($index === 0) ? 'active' : ''; 
-                    ?>
-                    <div class="carousel-item <?= htmlspecialchars($activeClass); ?>">
-                        <img src="<?= htmlspecialchars($image); ?>" alt="Image <?= $index + 1; ?>" class="w-full h-[282px] object-cover rounded-lg">
-                    </div>
-                    <?php } ?>
+                        <?php
+                            $images = explode(',', $event['image']); 
+                            foreach ($images as $index => $image) {
+                                $activeClass = ($index === 0) ? 'active' : ''; 
+                        ?>
+                        <div class="carousel-item <?= htmlspecialchars($activeClass); ?>">
+                            <img src="<?= htmlspecialchars($image); ?>" alt="Image <?= $index + 1; ?>" class="w-full h-[282px] object-cover rounded-lg">
+                        </div>
+                        <?php } ?>
                 </div>
                 <!-- Slider controls -->
                 <button class="absolute top-1/2 left-2 transform -translate-y-1/2 text-red-500 text-3xl prevBtn">‹</button>

@@ -57,12 +57,13 @@
                     <button type="button" onclick="btnBack()" class="bg-[#424242] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#343a40] transition">ย้อนกลับ</button>
                 </div>
 
-            </div>
+            </div>  
 
             <!-- select image -->
             <div class="w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
-                <div id="image-container" class="relative w-full h-full bg-gray-700 flex flex-col items-center justify-center text-gray-400 rounded-lg mb-4 border-2 border-dashed border-gray-500 cursor-pointer hover:bg-gray-600 transition overflow-hidden" ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="triggerFileInput()">
-                    <div id="image-slider" class="flex w-full h-full items-center justify-center" ondragover="event.preventDefault()" ondrop="handleImageReorder(event)">
+                <div id="image-container" class="relative w-full h-full bg-gray-700 flex flex-col items-center justify-center text-gray-400 rounded-lg mb-4 border-2 border-dashed border-gray-500 cursor-pointer hover:bg-gray-600 transition overflow-hidden" 
+                        ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="triggerFileInput()">
+                    <div id="image-slider" class="w-full h-full items-center justify-center" ondragover="event.preventDefault()" ondrop="handleImageReorder(event)">
                     <img src="<?= htmlspecialchars(str_replace(',', '', $event['image'] ?? '')) ?>" alt="">
                         <span id="upload-text" class="text-sm">คลิ๊กเพื่ออัปโหลด</span>
                         <span class="text-xs">หรือลากเพื่อวาง</span>

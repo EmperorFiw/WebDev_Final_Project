@@ -19,12 +19,12 @@ if (isset($data['data']) && !empty($data['data'])):
                             $activeClass = ($index === 0) ? 'active' : ''; 
                     ?>
                     <div class="carousel-item <?= htmlspecialchars($activeClass); ?>">
-                        <img src="<?= htmlspecialchars($image); ?>" alt="Image <?= $index + 1; ?>" class="w-full h-[512px] object-cover rounded-lg">
+                        <img src="<?= htmlspecialchars($image); ?>" alt="Image <?= $index + 1; ?>" class="w-full h-[512px] object-cover  rounded-lg">
                     </div>
                     <?php } ?>
                 </div>
-                <button class="absolute top-1/2 left-2 transform -translate-y-1/2 text-red-500 text-3xl prevBtn">‹</button>
-                <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500 text-3xl nextBtn">›</button>
+                <button class="absolute top-1/2 left-2 transform -translate-y-1/2 text-red-500 text-3xl prev">‹</button>
+                <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500 text-3xl next">›</button>
             </div>
         </div>
         

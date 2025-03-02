@@ -10,6 +10,7 @@ const nextButton = document.getElementById('next');
 let imageList = []; // เก็บรายการรูปภาพ
 let currentIndex = 0; // เก็บ index ของภาพที่แสดงอยู่
 
+
 // ฟังก์ชันเรียก input file
 function triggerFileInput() {
     imageInput.click();

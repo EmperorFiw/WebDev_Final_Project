@@ -25,7 +25,7 @@
 <body class="bg-[#1e1640]">
     <nav class="flex justify-between items-center border-b-2 border-white">
         <div class="l-box px-10">
-            <h1 class="text-white text-2xl">Activity</h1>
+            <h1 class="text-white text-2xl"><a href="/home">Activity</a></h1>
         </div>
         <div class="r-box flex flex-cols cursor-pointer px-10">
             <?php 

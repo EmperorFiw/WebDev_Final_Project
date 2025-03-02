@@ -58,12 +58,12 @@
             <!-- select image -->
             <div class="w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
                 <div id="image-container" class="relative w-full h-full bg-gray-700 flex flex-col items-center justify-center text-gray-400 rounded-lg mb-4 border-2 border-dashed border-gray-500 cursor-pointer hover:bg-gray-600 transition overflow-hidden" ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="triggerFileInput()">
-                    <div id="image-slider" class="flex w-full h-full items-center justify-center" ondragover="event.preventDefault()" ondrop="handleImageReorder(event)">
+                    <div id="image-slider" class="flex w-full h-full items-center justify-center bject-cover w-full h-full" ondragover="event.preventDefault()" ondrop="handleImageReorder(event)">
                         <span id="upload-text" class="text-sm">คลิ๊กเพื่ออัปโหลด</span>
                         <span class="text-xs">หรือลากเพื่อวาง</span>
                     </div>
-                    <button type="button" id="prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-[#301580] text-2xl hidden pointer-events-auto" onclick="prevImage(event)">&#9665;</button>
-                    <button type="button" id="next" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-[#301580] text-2xl hidden pointer-events-auto" onclick="nextImage(event)">&#9655;</button>
+                    <button type="button" id="prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-[#301580] text-2xl hidden pointer-events-auto" onclick="prevImage(event)">‹</button>
+                    <button type="button" id="next" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-[#301580] text-2xl hidden pointer-events-auto" onclick="nextImage(event)">›</button>
                 </div>
                 <input type="file" id="image-input" name="images[]" class="hidden" multiple>
                 <button id="addImg" type="button" class="cursor-pointer bg-[#301580] mt-8 p-2 rounded-lg w-full text-center text-white font-bold hover:bg-[#151541] transition">

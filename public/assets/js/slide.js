@@ -14,10 +14,6 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         });
     }
 
-    prevBtns[index].addEventListener('click', () => {
-        currentIndex = (currentIndex === 0) ? carouselItems.length - 1 : currentIndex - 1;
-        showSlide(currentIndex);
-    });
 
     nextBtns[index].addEventListener('click', () => {
         currentIndex = (currentIndex === carouselItems.length - 1) ? 0 : currentIndex + 1;
