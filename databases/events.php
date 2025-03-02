@@ -203,9 +203,9 @@ class Events {
             return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
         }
 
-        if (strtotime($reg_start_date) < strtotime($event_start_date) || strtotime($reg_start_date) > strtotime($event_end_date)) {
-            return "วันที่เริ่มลงทะเบียนต้องอยู่ภายในช่วงวันที่กิจกรรม";
-        }
+        // if (strtotime($reg_start_date) < strtotime($event_start_date) || strtotime($reg_start_date) > strtotime($event_end_date)) {
+        //     return "วันที่เริ่มลงทะเบียนต้องอยู่ภายในช่วงวันที่กิจกรรม";
+        // }
 
         $query = "INSERT INTO events (event_name, owner_id, create_date, event_start_date, event_end_date, event_start_time, event_end_time, reg_start_date, reg_end_date, description, image, capacity) 
             VALUES (?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?)";

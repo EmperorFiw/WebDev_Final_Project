@@ -3,6 +3,7 @@ const nextBtns = document.querySelectorAll('.nextBtn');
 const delBtn = document.getElementById("delete-image-edit");
 
 document.querySelectorAll('.carousel').forEach((carousel, index) => {
+    const carouselItems = carousel.querySelectorAll('.carousel-item');
     let currentIndex = 0;
 
     function showSlide(index) {
@@ -23,6 +24,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         showSlide(currentIndex);
     });
 });
+
 
 
 document.addEventListener('DOMContentLoaded', function() {
