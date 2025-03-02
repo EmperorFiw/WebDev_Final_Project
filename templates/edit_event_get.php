@@ -67,7 +67,7 @@
                         <?php
                             $images = explode(',', $event['image']);
                             foreach ($images as $index => $image) {
-                                $activeClass = ($index === 0) ? 'block' : 'hidden'; // แสดงเฉพาะรูปแรก
+                                $activeClass = ($index === 0) ? '' : 'hidden'; // แสดงเฉพาะรูปแรก
                                 echo '<div class="carousel-item absolute inset-0 w-full h-full ' . htmlspecialchars($activeClass) . '">
                                         <img src="' . htmlspecialchars($image) . '" alt="Image ' . ($index + 1) . '" class="w-full h-full object-cover">
                                     </div>';
@@ -81,7 +81,7 @@
                 <button id="addImg" type="button" class="cursor-pointer bg-[#301580] mt-8 p-2 rounded-lg w-full text-center text-white font-bold hover:bg-[#151541] transition">
                     เพิ่มรูปภาพ
                 </button>
-                <button id="delete-image" type="button" class="bg-[#750002] mt-3 p-2 rounded-lg w-full text-white font-bold hover:bg-red-700 transition">ลบรูปภาพ</button>
+                <button id="delete-image-edit" type="button" class=" bg-[#750002] mt-3 p-2 rounded-lg w-full text-white font-bold hover:bg-red-700 transition">ลบรูปภาพ</button>
             </div>
 
             <!-- <div class="w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
