@@ -116,7 +116,41 @@ if (!empty($action)) {
                     exit;
                 }
                 break;
+            case "delImg":
+                // $imgPath = $_GET['img'] ?? '';
+                // if (empty($imgPath))
+                // {
+                //     http_response_code(400);
+                //     exit; 
+                // }
+                $eventData = $events->getEventDataByID($eid);
+                if (isset($eventData[0])) {
+                    $eventData = $eventData[0];
+                }
+                $alertScript = "Swal.fire({
+                    title: 'คุณแน่ใจหรือไม่?',
+                    text: 'คุณต้องการลบรูปนี้จริงๆ หรือไม่?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'ยืนยัน',
+                    cancelButtonText: 'ยกเลิก'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('deleteForm').submit();
+                    }
+                        
+                    });";
+                    // else {
+                    //     window.location.href = '/edit_event';
+                    // }
 
+                $eventData['alertScript'] = $alertScript;
+                $eventData['imgPath'] = $eid;
+
+                renderView("edit_event_get", $eventData);
+                break;
             default:
                 http_response_code(400);
                 break;

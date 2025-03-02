@@ -81,7 +81,15 @@
                 <button id="addImg" type="button" class="cursor-pointer bg-[#301580] mt-8 p-2 rounded-lg w-full text-center text-white font-bold hover:bg-[#151541] transition">
                     เพิ่มรูปภาพ
                 </button>
-                <button id="delete-image-edit" type="button" class=" bg-[#750002] mt-3 p-2 rounded-lg w-full text-white font-bold hover:bg-red-700 transition">ลบรูปภาพ</button>
+                <form action="" method="get" class="hidden"></form>
+                <form id="deleteForm" action="/event_controller" method="get" class="w-full">
+                    <input type="hidden" name="action" value="delImg">
+                    <input type="hidden" name="eid" value="<?= htmlspecialchars($event['eid']) ?>">
+                    <button type="submit" id="delete-image-edit" class="bg-[#750002] mt-3 p-2 rounded-lg w-full text-white font-bold hover:bg-red-700 transition">
+                        ลบรูปภาพ
+                    </button>
+                </form>
+
             </div>
 
             <!-- <div class="w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
@@ -107,14 +115,20 @@
 
 <script src="/assets/js/uploadImage.js"></script>
 <script src="/assets/js/slide.js"></script>
-<?php if (isset($data['alertScript'])): ?>
-    <script>
-        <?= $data['alertScript']?>
-    </script>
-<?php endif; ?>
-
 <script>
     function btnBack() {
         window.location.href = 'my_events';
     }
 </script>
+
+<?php if (isset($data['alertScript'])): ?>
+    <?php if (isset($data['deleteID'])): ?>
+    <form id="deleteForm" action="delete_image" method="POST" class="hidden">
+        <input type="hidden" name="eid" value="<?= $data['deleteID'] ?>">
+        <input type="hidden" name="eid" value="<?= $data['img'] ?>">
+    </form>
+    <?php endif; ?>
+    <script>
+        <?= $data['alertScript']?>
+    </script>
+<?php endif; ?>

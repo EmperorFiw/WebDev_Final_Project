@@ -3,17 +3,7 @@ const nextBtns = document.querySelectorAll('.nextBtn');
 const delBtn = document.getElementById("delete-image-edit");
 
 document.querySelectorAll('.carousel').forEach((carousel, index) => {
-    const carouseCon = carousel.querySelectorAll('.carousel-container');
     let currentIndex = 0;
-
-    // delBtn.addEventListener('click', () => {
-    //     carouseCon.forEach((item, i) => { 
-    //         if (i === index) {
-    //             item.classList.add('active');
-    //             alert('fuck');
-    //         }
-    //     });
-    // });
 
     function showSlide(index) {
         carouselItems.forEach((item, i) => { 
@@ -32,4 +22,30 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         currentIndex = (currentIndex === carouselItems.length - 1) ? 0 : currentIndex + 1;
         showSlide(currentIndex);
     });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const delBtn = document.getElementById('delete-image-edit');
+    
+    console.log('Button:', delBtn); // ตรวจสอบว่า button ถูกโหลดหรือไม่
+
+    if ( delBtn) {
+        delBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            const activeImage = document.querySelector('.carousel-item:not(.hidden) img');
+            if (activeImage) {
+                const imageContainer = activeImage.closest('.carousel-item');
+                imageContainer.remove();
+                updateImg();
+            }
+        });
+    } else {
+        console.error('Form or Button not found!');
+    }
+    function updateImg() 
+    {
+        showSlide(0);
+    }
+
 });
