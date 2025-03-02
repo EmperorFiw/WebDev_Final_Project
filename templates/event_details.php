@@ -23,8 +23,8 @@ if (isset($data['data']) && !empty($data['data'])):
                     </div>
                     <?php } ?>
                 </div>
-                <button class="absolute top-1/2 left-2 transform -translate-y-1/2 text-red-500 text-3xl prev">‹</button>
-                <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500 text-3xl next">›</button>
+                <button type="button" id="prev" class="prevBtn absolute left-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-[#301580] text-2xl pointer-events-auto" onclick="prevImage(event)">‹</button>
+                <button type="button" id="next" class="nextBtn absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-[#301580] text-2xl pointer-events-auto" onclick="nextImage(event)">›</button>
             </div>
         </div>
         

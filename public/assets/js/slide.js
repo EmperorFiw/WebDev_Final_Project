@@ -6,7 +6,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
     let currentIndex = 0;
 
     function showSlide(index) {
-        carouselItems.forEach((item, i) => {
+        carouselItems.forEach((item, i) => { 
             item.classList.remove('active');
             if (i === index) {
                 item.classList.add('active');

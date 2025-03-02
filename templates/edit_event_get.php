@@ -63,15 +63,15 @@
             <div class="carousel-container w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
                 <div id="image-container" class="carousel relative w-full h-full bg-gray-700 flex flex-col items-center justify-center text-gray-400 rounded-lg mb-4 border-2 border-dashed border-gray-500 cursor-pointer hover:bg-gray-600 transition overflow-hidden" ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="triggerFileInput()">
                     <!-- <div id="image-slider" class="w-full h-full items-center object-cover justify-center" ondragover="event.preventDefault()" ondrop="handleImageReorder(event)"> -->
-                    <div id="image-slider" class="w-full h-full items-center object-cover justify-center">
+                    <div id="image-slider" class="w-full h-full relative  object-cover">
                         <?php
                             $images = explode(',', $event['image']);
                             foreach ($images as $index => $image) {
-                                $activeClass = ($index === 0) ? 'active' : '';
-                                echo '<div class="carousel-item ' . htmlspecialchars($activeClass) . '">
-                                        <img src="' . htmlspecialchars($image) . '" alt="Image ' . ($index + 1) . '">
+                                $activeClass = ($index === 0) ? 'block' : 'hidden'; // แสดงเฉพาะรูปแรก
+                                echo '<div class="carousel-item absolute inset-0 w-full h-full ' . htmlspecialchars($activeClass) . '">
+                                        <img src="' . htmlspecialchars($image) . '" alt="Image ' . ($index + 1) . '" class="w-full h-full object-cover">
                                     </div>';
-                            }
+                            } 
                         ?>
                     </div>
                     <button type="button" id="prev" class="prevBtn absolute left-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-[#301580] text-2xl pointer-events-auto" onclick="prevImage(event)">‹</button>
