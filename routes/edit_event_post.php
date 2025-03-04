@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $event_id = $_POST['event_id'] ?? '';  // รับ event_id เพื่อทำการแก้ไขกิจกรรมที่เลือก
+    $event_id = $_POST['event_id'] ?? ''; 
     $event_name = $_POST['event_name'] ?? '';
     $max_participants = $_POST['max_participants'] ?? '';
     $event_start_date = $_POST['event_start_date'] ?? '';
@@ -18,40 +18,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         (!empty($event_name) || !empty($max_participants) || !empty($event_start_date) || !empty($event_end_date) || 
          !empty($event_start_time) || !empty($event_end_time) || !empty($reg_start_date) || !empty($reg_end_date) || !empty($details))) 
     {
-        // แปลง event_id เป็น integer
         $event_id = (int)$event_id;
         $events = new Events();
         $eventData = $events->getEventDataByID($event_id);
         if (isset($eventData[0])) {
-            $eventData = $eventData[0];  // เลือกแถวแรก
+            $eventData = $eventData[0];
         }
         if (!empty($images['name'][0])) {
             $imageData = [];
-            $uploadDir = 'assets/img/'; // โฟลเดอร์ที่ต้องการเก็บไฟล์
+            $uploadDir = 'assets/img/'; 
 
-            // วนลูปทุกไฟล์ใน images
+    
             foreach ($images['tmp_name'] as $key => $tmp_name) {
-                // ตรวจสอบว่าไฟล์เป็นภาพจริงๆ
+
                 $imageInfo = getimagesize($tmp_name);
                 if ($imageInfo !== false) {
-                    // เปลี่ยนชื่อไฟล์เป็นแบบสุ่มเพื่อป้องกันชื่อซ้ำ
+
                     $fileExtension = pathinfo($images['name'][$key], PATHINFO_EXTENSION);
-                    $randomString = bin2hex(random_bytes(8));  // สุ่ม 8 ไบต์ = 16 ตัวอักษร Hex
-                    $newFileName = $event_name . '_' . $randomString . '.' . $fileExtension; // ใช้ชื่อกิจกรรม + รหัสสุ่ม
+                    $randomString = bin2hex(random_bytes(8));  
+                    $newFileName = $event_name . '_' . $randomString . '.' . $fileExtension; 
                     $filePath = $uploadDir . $newFileName;
 
-                    // อัปโหลดไฟล์
                     if (move_uploaded_file($tmp_name, $filePath)) {
-                        $imageData[] = $filePath; // เก็บเส้นทางไฟล์ที่อัปโหลด
+                        $imageData[] = $filePath; 
                     }
                 } else {
                     swalAlertWithData('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'edit_event_get', 'edit_event', $eventData, true);
                 }
             }
 
-            $imagePathsString = implode(',', $imageData);  // เชื่อมเส้นทางไฟล์ทั้งหมดเป็น string
+            $imagePathsString = implode(',', $imageData); 
         } else {
-            $imagePathsString = '';  // กรณีไม่มีการอัปโหลดใหม่
+            $imagePathsString = '';  
         }
 
         $events = new Events();

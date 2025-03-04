@@ -58,11 +58,9 @@
                 </div>
 
             </div>  
-            <!-- assets/img/KKK_d52d6846f90cff34.png,assets/img/KKK_d101474a645d323f.jpg -->
             <!-- select image -->
             <div class="carousel-container w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
                 <div id="image-container" class="carousel relative w-full h-full bg-gray-700 flex flex-col items-center justify-center text-gray-400 rounded-lg mb-4 border-2 border-dashed border-gray-500 cursor-pointer hover:bg-gray-600 transition overflow-hidden" ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="triggerFileInput()">
-                    <!-- <div id="image-slider" class="w-full h-full items-center object-cover justify-center" ondragover="event.preventDefault()" ondrop="handleImageReorder(event)"> -->
                     <div id="image-slider" class="w-full h-full relative  object-cover">
                         <?php
                             $images = explode(',', $event['image']);
@@ -91,24 +89,6 @@
                 </form>
 
             </div>
-
-            <!-- <div class="w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
-                <div id="image-container" class="relative w-full h-full bg-gray-700 flex flex-col items-center justify-center text-gray-400 rounded-lg mb-4 border-2 border-dashed border-gray-500 cursor-pointer hover:bg-gray-600 transition overflow-hidden" 
-                        ondragover="event.preventDefault()" ondrop="handleDrop(event)" onclick="triggerFileInput()">
-                    <div id="image-slider" class="w-full h-full items-center justify-center" ondragover="event.preventDefault()" ondrop="handleImageReorder(event)">
-
-                        <span id="upload-text" class="text-sm">คลิ๊กเพื่ออัปโหลด</span>
-                        <span class="text-xs">หรือลากเพื่อวาง</span>
-                    </div>
-                    <button type="button" onclick="event.stopPropagation();" class="absolute top-1/2 left-2 transform -translate-y-1/2 text-red-500 text-3xl prevBtn">‹</button>
-                    <button type="button" onclick="event.stopPropagation();" class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500 text-3xl nextBtn">›</button>
-                </div>
-                <label class="cursor-pointer bg-[#301580] mt-8 p-2 rounded-lg w-full text-center text-white font-bold hover:bg-[#151541] transition">
-                    เพิ่มรูปภาพ
-                    <input type="file" id="image-input" name="image[]" class="hidden" multiple>
-                </label>
-                <button id="delete-image" type="button" class="bg-[#750002] mt-3 p-2 rounded-lg w-full text-white font-bold hover:bg-red-700 transition">ลบรูปภาพ</button>
-            </div> -->
         </form>
     </div>
 <div> 

@@ -147,24 +147,19 @@ class Users {
     }
     public function userApprovalStatus(int $uid, int $eid): int
     {
-        // Prepare SQL statement with parentheses for correct logical order
         $sql = "SELECT * FROM history WHERE uid = ? AND eid = ? AND (join_state = 1 OR join_state = 4)";
         $stmt = $this->conn->prepare($sql);
     
-        // Check for prepare statement error
         if ($stmt === false) {
             echo "Error preparing statement: " . $this->conn->error;
-            return -1;  // Return error code if prepare fails
+            return -1;
         }
     
-        // Bind parameters and execute
         $stmt->bind_param("ii", $uid, $eid);
         $stmt->execute();
     
-        // Get the result
         $result = $stmt->get_result();
-    
-        // Return if rows exist (true if there are rows, false if not)
-        return $result->num_rows > 0 ? 1 : 0;  // 1 for found, 0 for not found
+        
+        return $result->num_rows > 0 ? 1 : 0; 
     }
 }

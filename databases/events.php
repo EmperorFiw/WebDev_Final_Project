@@ -24,7 +24,6 @@ class Events {
         return $result->num_rows > 0;
     }
     
-    
     public function isUserInEvent(string $uName, int $eID): bool {
         $uid = $this->users->getUserIDByName($uName);
         $query = "SELECT 1 FROM history WHERE uid = ? AND eid = ? LIMIT 1";
@@ -292,7 +291,7 @@ class Events {
                         $details, $imagePathsString, $capacity, $event_id);
 
         if ($stmt->execute()) {
-            return "แก้ไขกิจกรรมสำเร็จ!";  // คืนค่า event_id ที่ถูกอัพเดท
+            return "แก้ไขกิจกรรมสำเร็จ!"; 
         }
 
         return "เกิดข้อผิดพลาดในการอัพเดทกิจกรรม";

@@ -11,7 +11,7 @@ $uname = $users->getName();
 
 if (!empty($action)) {
     if (!empty($eid)) {
-        $eid = (int)$eid; // แปลง $eid เป็นจำนวนเต็ม
+        $eid = (int)$eid; 
 
         if (!$events->isOwnerEvent($uname, $eid)) {
             http_response_code(403);
@@ -50,7 +50,7 @@ if (!empty($action)) {
                 break;
 
             case "edit":
-                if (!empty($eventData)) {
+                if (!empty($eventData)) { 
                     $eventData = $events->getEventDataByID($eid);
                     if (isset($eventData[0])) {
                         $eventData = $eventData[0];
@@ -89,7 +89,6 @@ if (!empty($action)) {
             case "approveUser":
             case "rejectUser":
                 if ($uid && $eid && in_array($action, ['approveUser', 'rejectUser'])) {
-                    // กำหนดสถานะการเข้าร่วม (อนุมัติ = 1, ปฏิเสธ = 4)
                     $join_state = ($action === 'approveUser') ? 1 : 4;
 
                     if (empty($eid) || !$events->getEventDataByID($eid) || !$events->isOwnerEvent($uname, $eid)) {

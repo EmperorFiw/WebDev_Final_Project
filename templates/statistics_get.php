@@ -47,7 +47,7 @@
                 }]
             },
             options: {
-                responsive: false, // ใช้ขนาด canvas ตามที่ระบุไว้
+                responsive: false,
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {

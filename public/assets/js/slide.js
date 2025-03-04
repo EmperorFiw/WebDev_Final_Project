@@ -23,6 +23,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
         currentIndex = (currentIndex === carouselItems.length - 1) ? 0 : currentIndex + 1;
         showSlide(currentIndex);
     });
+    showSlide(0);
 });
 
 
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if ( delBtn) {
         delBtn.addEventListener('click', function(event) {
+            console.log('sds');
             event.preventDefault();
             const activeImage = document.querySelector('.carousel-item:not(.hidden) img');
             if (activeImage) {

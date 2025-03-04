@@ -15,11 +15,10 @@ class Statistic {
         $stmt->execute();
         $result = $stmt->get_result();
     
-        // ตัวแปรเก็บข้อมูล
-        $ageData = [0, 0, 0, 0];  // อายุ: 0-18, 19-36, 37-50, 51+
-        $genderData = [0, 0];      // เพศ: ชาย, หญิง
+
+        $ageData = [0, 0, 0, 0];
+        $genderData = [0, 0]; 
     
-        // ประมวลผลข้อมูลที่ดึงมา
         while ($row = $result->fetch_assoc()) {
             $age = (int)$row['age'];
             if ($age <= 18) {

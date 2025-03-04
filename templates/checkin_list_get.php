@@ -1,10 +1,7 @@
-<?php
-// print_r($data);
-?>
 <title>การจัดการผู้เข้าร่วม</title>
 
 <div class="container mx-auto mt-2 p-5 text-white">
-    <h2 class="text-3xl pl-14 ml-20">การจัดการผู้เข้าร่วม</h2>
+    <h2 class="text-left text-3xl py-2">รายการผู้เช็คชื่อ</h2>
 </div>
 <div class="bg-[#5B5B5B] shadow-lg w-full max-w-[80%] mx-auto overflow-hidden min-h-[600px]">
     <div class="text-white">
@@ -20,7 +17,7 @@
                         <th class="py-2 font-normal">อายุ</th>
                         <th class="py-2 font-normal">โทรศัพท์</th>
                         <th class="py-2 font-normal w-[150px]">ประเภทผู้เข้าร่วม</th>
-                        <th class="py-2 font-normal w-[150px]">อนุญาต / ปฏิเสธ</th>
+                        <th class="py-2 font-normal w-[150px]">สถานะ</th>
                     </tr>
                 </thead>
 
@@ -35,19 +32,14 @@
                                 <td class="px-4 py-2 pt-4 text-center"><?= htmlspecialchars($row['gender']) ?></td>
                                 <td class="px-4 py-2 pt-4 text-center"><?= htmlspecialchars($row['age']) ?></td>
                                 <td class="px-4 py-2 pt-4 text-center"><?= htmlspecialchars($row['tel']) ?></td>
-                                <td class="px-4 py-2 pt-4 text-center"><?= htmlspecialchars($row['type']) ?></td>
+                                <!-- ตรงนี้ใส่ถานะเมื่อเช็คชื่อแล้ว -->
                                 <td class="px-4 py-2 pt-4 text-center">
                                 <form method="GET" action="/event_controller">
                                         <input type="hidden" name="uid" value="<?= $row['uid'] ?>">
                                         <input type="hidden" name="eid" value="<?= $row['eid'] ?>">
 
                                         <div class="inline-flex space-x-4">
-                                            <button type="button" name="action" value="approveUser" class="actionBtn bg-green-700 hover:bg-green-600 text-white py-1 px-3 rounded text-sm">
-                                                อนุมัติ
-                                            </button>
-                                            <button type="button" name="action" value="rejectUser" class="actionBtn bg-red-700 hover:bg-red-600 text-white py-1 px-3 rounded text-sm">
-                                                ปฏิเสธ
-                                            </button>
+                                            
                                         </div>
                                     </form>
                                 </td> 
@@ -64,41 +56,3 @@
         </div>
     </div>
 </div>
-<script>
-    // การยืนยันการอนุมัติหรือปฏิเสธ
-    document.querySelectorAll('.actionBtn').forEach(button => {
-        button.addEventListener('click', function() {
-            const action = this.getAttribute('value');
-            const uid = this.getAttribute('data-uid');
-            const eid = this.getAttribute('data-eid');
-            
-            Swal.fire({
-                title: `คุณแน่ใจหรือไม่?`,
-                text: `คุณต้องการ${action === 'approveUser' ? 'อนุมัติ' : 'ปฏิเสธ'}ผู้ใช้นี้หรือไม่?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: action === 'approveUser' ? '#3085d6' : '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: action === 'approveUser' ? 'อนุมัติ' : 'ปฏิเสธ',
-                cancelButtonText: 'ยกเลิก'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // ส่งฟอร์ม
-                    const form = this.closest('form');
-                    const actionInput = document.createElement('input');
-                    actionInput.setAttribute('type', 'hidden');
-                    actionInput.setAttribute('name', 'action');
-                    actionInput.setAttribute('value', action);
-                    form.appendChild(actionInput);
-
-                    form.submit();
-                }
-            });
-        });
-    });
-</script>
-<?php if (isset($data['alertScript'])): ?>
-    <script>
-        <?= $data['alertScript']?>
-    </script>
-<?php endif; ?>

@@ -22,8 +22,8 @@ $events_history = $data['historyData'];
             <button class="bg-[#301580] text-white px-4 py-2 rounded-2xl hover:bg-blue-600">ค้นหา</button>
         </div>
     </div>
-</form>
-
+</form> 
+ 
 <!-- ประวัติเข้าร่วม  -->
 <?php if (!empty($events_history) && !empty($_SESSION['username'])): ?>
 <div class="container mx-auto px-10 mt-4 p-4 flex flex-col items-center">
@@ -46,7 +46,7 @@ $events_history = $data['historyData'];
             <span id="totalPages">จาก <?= $data['totalPages'] ?> หน้า</span>
         </div>
 
-        <div></div> <!-- ไม่ต้องลบ สร้างเอา position -->
+        <div></div> 
     
         <div class="flex justify-end gap-2">
             <button id="prevPage" class="bg-[#301580] text-white px-5 py-2 rounded-lg hover:bg-blue-700" disabled>
@@ -90,7 +90,7 @@ $events_history = $data['historyData'];
                         </div>
                         <?php } ?>
                 </div>
-                <!-- Slider controls -->
+  
                 <button class="absolute top-1/2 left-2 transform -translate-y-1/2 text-red-500 text-3xl prevBtn">‹</button>
                 <button class="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500 text-3xl nextBtn">›</button>
             </div>
@@ -123,15 +123,12 @@ $events_history = $data['historyData'];
 </div>
 <script src="/assets/js/slide.js"></script>
 
-<!-- script ประวัติ  -->
 <script>
-// PHP Data for events
 const events_history = <?php echo json_encode($events_history); ?>;
 
 let currentPage = 1;
 const eventsPerPage = 5;
 
-// Function to render table data
 function renderTable() {
     const start = (currentPage - 1) * eventsPerPage;
     const end = start + eventsPerPage;
@@ -151,52 +148,50 @@ function renderTable() {
 
         const statusCell = document.createElement("td");
         statusCell.classList.add("px-4", "py-2", "text-center");
-        // สร้างปุ่ม
+  
         const statusButton = document.createElement("button");
         statusButton.classList.add("w-1/3", "px-4", "py-2", "text-center", "rounded-2xl", "text-white");
 
         switch (event.join_state) {
             case 0:
                 statusText = "รอดำเนินการ";
-                statusColor = "bg-yellow-500"; // สีเหลืองสำหรับรอดำเนินการ
+                statusColor = "bg-yellow-500"; 
                 break;
             case 1:
                 statusText = "อนุมัติ";
-                statusColor = "bg-green-500"; // สีน้ำเงินสำหรับอนุมัติ
+                statusColor = "bg-green-500";
                 break;
             case 2:
                 statusText = "กิจกรรมจบแล้ว";
-                statusColor = "bg-green-500"; // สีเขียวสำหรับเสร็จสิ้น
+                statusColor = "bg-green-500";
                 break;
             case 3:
                 statusText = "ไม่ได้เข้าร่วม";
-                statusColor = "bg-red-500"; // สีแดงสำหรับไม่ได้เข้าร่วม
+                statusColor = "bg-red-500"; 
                 break;
             case 4:
                 statusText = "ถูกปฏิเสธ";
-                statusColor = "bg-red-500"; // สีเทาสำหรับถูกปฏิเสธ
+                statusColor = "bg-red-500";
                 break;
             default:
                 statusText = "ไม่ทราบสถานะ";
-                statusColor = "bg-gray-500"; // สีเทาสำหรับสถานะไม่ทราบ
+                statusColor = "bg-gray-500"; 
         }
         statusButton.textContent = statusText;
-        statusButton.classList.add(statusColor);  // เพิ่มคลาสสีที่เลือก
-        // เพิ่มปุ่มลงใน statusCell
+        statusButton.classList.add(statusColor);
+
         statusCell.appendChild(statusButton);
         row.appendChild(statusCell);
         tableBody.appendChild(row);
     });
 
-    // Update page number
+
     document.getElementById("pageNumber").textContent = `หน้า ${currentPage}`;
 
-    // Handle pagination buttons
     document.getElementById("prevPage").disabled = currentPage === 1;
     document.getElementById("nextPage").disabled = currentPage * eventsPerPage >= events_history.length;
 }
 
-// Handle next and previous page buttons
 document.getElementById("prevPage").addEventListener("click", () => {
     if (currentPage > 1) {
         currentPage--;

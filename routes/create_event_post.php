@@ -18,25 +18,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     {
         if (!empty($images['name'][0])) {
             $imageData = [];
-            $uploadDir = 'assets/img/'; // โฟลเดอร์ที่ต้องการเก็บไฟล์
+            $uploadDir = 'assets/img/';
 
-            // วนลูปทุกไฟล์ใน images
             foreach ($images['tmp_name'] as $key => $tmp_name) {
-                // ตรวจสอบว่าไฟล์เป็นภาพจริงๆ
                 $imageInfo = getimagesize($tmp_name);
                 if ($imageInfo !== false) {
-                    // เปลี่ยนชื่อไฟล์เป็นแบบสุ่มเพื่อป้องกันชื่อซ้ำ
+
                     $fileExtension = pathinfo($images['name'][$key], PATHINFO_EXTENSION);
-                    $randomString = bin2hex(random_bytes(8));  // สุ่ม 8 ไบต์ = 16 ตัวอักษร Hex
-                    $newFileName = $event_name . '_' . $randomString . '.' . $fileExtension; // ใช้ชื่อกิจกรรม + รหัสสุ่ม
+                    $randomString = bin2hex(random_bytes(8));
+                    $newFileName = $event_name . '_' . $randomString . '.' . $fileExtension; 
                     $filePath = $uploadDir . $newFileName;
 
-                    // อัปโหลดไฟล์
                     if (move_uploaded_file($tmp_name, $filePath)) {
-                        $imageData[] = $filePath; // เก็บเส้นทางไฟล์ที่อัปโหลด
+                        $imageData[] = $filePath; 
                     }
                 } else {
-                    // ถ้าไม่ใช่ไฟล์ภาพจริงๆ
                     swalAlert('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'create_event_get', 'create_event');
                 }
             }
