@@ -220,6 +220,7 @@ class Events {
         }
         return "เกิดข้อผิดพลาดในการสร้างกิจกรรม";
     }
+
     public function updateEvent(int $event_id, string $event_name, int $ownerID, int $capacity, string $event_start_date, 
         string $event_end_date, string $event_start_time, string $event_end_time, string $reg_start_date,
         string $reg_end_date, string $details, string $imageData): string
@@ -256,9 +257,9 @@ class Events {
             return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
         }
 
-        if (strtotime($reg_start_date) < strtotime($event_start_date) || strtotime($reg_start_date) > strtotime($event_end_date)) {
-            return "วันที่เริ่มลงทะเบียนต้องอยู่ภายในช่วงวันที่กิจกรรม";
-        }
+        // if (strtotime($reg_start_date) < strtotime($event_start_date) || strtotime($reg_start_date) > strtotime($event_end_date)) {
+        //     return "วันที่เริ่มลงทะเบียนต้องอยู่ภายในช่วงวันที่กิจกรรม";
+        // }
 
         // ตรวจสอบว่า event_id ที่ต้องการอัพเดทมีอยู่ในฐานข้อมูลหรือไม่
         $checkQuery = "SELECT * FROM events WHERE eid = ?";

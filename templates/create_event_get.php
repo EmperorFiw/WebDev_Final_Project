@@ -51,9 +51,9 @@
                 <textarea name="details" placeholder="รายละเอียดกิจกรรม" class="p-2 rounded-lg bg-[#D9D9D9] w-full h-[150px] text-black"></textarea>
 
                 <div class="mt-auto w-full flex justify-center">
-                    <button type="submit" class="bg-[#0A7500] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#32CD32] transition">ยืนยัน</button>
+                    <button type="submit" id="confirmButton" class="bg-[#0A7500] mt-3 p-2 rounded-lg w-1/3 text-white font-bold hover:bg-[#32CD32] transition">ยืนยัน</button>
                 </div>
-            </div> 
+            </div>  
             
             <!-- select image -->
             <div class="w-1/2 h-[500px] flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg mt-12">
@@ -81,4 +81,19 @@
     <script>
         <?= $data['alertScript']?>
     </script>
+
+<script>
+    let clickCount = 0;
+
+    document.getElementById('confirmButton').addEventListener('click', function(event) {
+        clickCount++;
+
+        if (clickCount > 1) {
+            alert('กรุณาหยุดกดปุ่มยืนยันซ้ำ');
+            event.preventDefault();
+        } else {
+            this.form.submit();
+        }
+    });
+</script>
 <?php endif; ?>

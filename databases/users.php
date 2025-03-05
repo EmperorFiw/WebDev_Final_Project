@@ -84,6 +84,14 @@ class Users {
         if (!is_numeric($phone)) {
             return "หมายเลขโทรศัพท์ต้องเป็นตัวเลข";
         }
+
+        if(strlen($phone) != 10){
+            return "กรุณาใส่หมายเลขให้ครบ 10 ตัว";
+        }
+
+        if($this->isPhoneExiting($phone)){
+            return "หมายเลขโทรศัพท์นี้มีคนใช้ไปแล้ว";
+        }
     
         if ($this->isUsernameExiting($username)) {
             return "ชื่อผู้ใช้งานนี้มีอยู่แล้ว";
@@ -162,4 +170,15 @@ class Users {
         
         return $result->num_rows > 0 ? 1 : 0; 
     }
+
+    private function isPhoneExiting(string $phone): bool
+    {
+        $sql = "SELECT tel FROM users WHERE tel = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $phone);
+        $stmt->execute();
+        $stmt->store_result();
+        return $stmt->num_rows > 0;
+    }
 }
+
