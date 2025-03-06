@@ -44,8 +44,7 @@ class Users {
     
         return "";
     }
-    public function isCheckInSucc(string $uName, int $eID):bool {
-        $uid = $this->getUserIDByName($uName);
+    public function isCheckInSucc(int $uid, int $eID):bool {
         $query = "SELECT checkIn FROM history WHERE eid = ? AND uid = ? LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("ii", $eID, $uid);
@@ -57,9 +56,9 @@ class Users {
         return false;
     }
     public function checkIn(int $uid, int $eid): bool {
-        $query = "UPDATE history SET checkIn = 1 WHERE uid = ? AND eid = ?";
+        $query = "UPDATE history SET checkIn = 1 WHERE uid = ? AND eid = ? LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ii", $uid, $uid);
+        $stmt->bind_param("ii", $uid, $eid);
         return $stmt->execute();
     }    
     

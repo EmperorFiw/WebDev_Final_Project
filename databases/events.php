@@ -24,8 +24,7 @@ class Events {
         return $result->num_rows > 0;
     }
     
-    public function isUserInEvent(string $uName, int $eID): bool {
-        $uid = $this->users->getUserIDByName($uName);
+    public function isUserInEvent(int $uid, int $eID): bool {
         $query = "SELECT 1 FROM history WHERE uid = ? AND eid = ? LIMIT 1";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("ii", $uid, $eID);

@@ -11,6 +11,8 @@ $event = new Events();
 $users = new Users();
 
 $eventData = $event->getEventDataByID($eventID);
+$username = $_SESSION['username'];
+$uid = $users->getUserIDByName($username);
 
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
 if (empty($eventData) || !$eventData['checkIn'])
@@ -36,7 +38,6 @@ else if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     exit;
 }
 else {
-    $username = $_SESSION['username'];
     if ($event->getEventStatus($eventID) == "กิจกรรมจบ")
     {
         echo '<script>
@@ -58,7 +59,7 @@ else {
        http_response_code(403); 
        exit;
     }
-    else if (!$event->isUserInEvent($username, $eventID)) {
+    else if (!$event->isUserInEvent($uid, $eventID)) {
         echo '<script>
             document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({
@@ -73,30 +74,14 @@ else {
             });
         </script>';
     }
-    else if (!$users->isCheckInSucc($username, $eventID)){
+    else {
         $eventName = $event->getEventName($eventID);
-        $uid = $user->getUserIDByName($username);
         if ($users->checkIn($uid, $eventID))
         echo '<script>
             document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({
                     title: "สำเร็จ!",
                     text: "เช็คชื่อกิจกรรม '.$eventName.' สำเร็จ!",
-                    icon: "success"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "/home";
-                    }
-                });
-            });
-            </script>';
-    }
-    else {
-        echo '<script>
-            document.addEventListener("DOMContentLoaded", function() {
-                Swal.fire({
-                    title: "สำเร็จ!",
-                    text: "คุณเช็คชื่อไปแล้ว!",
                     icon: "success"
                 }).then((result) => {
                     if (result.isConfirmed) {
