@@ -18,6 +18,8 @@
     <script src="https://cdn.tailwindcss.com?plugins=typography,forms,aspect-ratio,line-clamp"></script>
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- QR CODE  -->
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/master/qrcode.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/snowFlake.css">
     <link rel="stylesheet" href="/assets/css/custom.css">
@@ -55,7 +57,7 @@
                                 </a>
                                 
                                 <!-- ปุ่มออกจากระบบ -->
-                                <form action="/logout" method="POST" style="display:inline;">
+                                <form action="/logout" method="GET" style="display:inline;">
                                     <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer w-full text-left hover:bg-red-600">
                                         <i class="fas fa-sign-out-alt mr-2"></i> ออกจากระบบ
                                     </button>

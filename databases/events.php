@@ -63,18 +63,6 @@ class Events {
         return "NULL";
     }
     
-    public function isCheckInSucc(string $uName, int $eID):bool {
-        $uid = $this->users->getUserIDByName($uName);
-        $query = "SELECT checkIn FROM history WHERE eid = ? AND uid = ? LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ii", $eID, $uid);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            return true;
-        }
-        return false;
-    }
     public function getEventStatus($eid): string {
         $query = "SELECT status FROM events WHERE eid = ?";
         
@@ -385,6 +373,36 @@ class Events {
         }
     
         return "เกิดข้อผิดพลาดในการอัปเดต!";
+    }
+
+    public function getCheckListData(int $eid): array
+    {
+        $query = "SELECT e.event_name, h.firstname, h.lastname, h.gender, h.age, h.tel, h.type, h.checkIn
+        FROM history h 
+        JOIN events e ON h.eid = e.eid 
+        WHERE e.eid = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $eid);
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $events = [];
+            while ($row = $result->fetch_assoc()) {
+                $events[] = $row;
+            }
+            return $events;
+        } else {
+            return [];
+        }
+    }
+
+    public function setCheckInStatus(int $eid, int $status): void
+    {
+        $stmt = $this->conn->prepare("UPDATE events SET checkIn = ? WHERE eid = ?");
+        $stmt->bind_param("ii",  $status, $eid);
+        $stmt->execute();
     }
     
     

@@ -16,9 +16,14 @@
                     <i class="fas fa-check-circle"></i> การอนุมัติ
                 </button>
 
-                <button type="submit" name="action" value="checklist"
+                <button type="submit" name="action" value="gen_qrcode"
+                    class="flex items-center gap-2 bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-orange-600 transition">
+                    <i class="fas fa-list-check"></i> เปิดให้เช็คชื่อ
+                </button>
+
+                <button type="submit" name="action" value="checkin_list"
                     class="flex items-center gap-2 bg-green-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition">
-                    <i class="fas fa-list-check"></i> รายการเช็คชื่อ
+                    <i class="fas fa-list-alt"></i> รายการเช็คชื่อ
                 </button>
 
                 <button type="submit" name="action" value="statistics"

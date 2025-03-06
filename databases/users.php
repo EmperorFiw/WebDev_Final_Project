@@ -44,17 +44,27 @@ class Users {
     
         return "";
     }
-    
-    public function updateUsersInt(string $column, int $values, int $uid): bool {
-        $query = "UPDATE users SET $column = ? WHERE uid = ?";
+    public function isCheckInSucc(string $uName, int $eID):bool {
+        $uid = $this->getUserIDByName($uName);
+        $query = "SELECT checkIn FROM history WHERE eid = ? AND uid = ? LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ii",$values, $uid);
+        $stmt->bind_param("ii", $eID, $uid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        return false;
+    }
+    public function checkIn(int $uid, int $eid): bool {
+        $query = "UPDATE history SET checkIn = 1 WHERE uid = ? AND eid = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("ii", $uid, $uid);
         return $stmt->execute();
     }    
     
     public function isUsernameExiting(string $username): bool
     {
-        $conn = $this->db->getConnection();
         $sql = "SELECT * FROM users WHERE username = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $username);

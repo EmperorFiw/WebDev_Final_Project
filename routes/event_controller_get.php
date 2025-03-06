@@ -157,6 +157,17 @@ if (!empty($action)) {
 
                 renderView("edit_event_get", $eventData);
                 break;
+            case "checkin_list":
+                $eventData = $events->getCheckListData($eid);
+                renderView("checkin_list_get", $eventData);
+                break;
+            case "gen_qrcode":
+                $events->setCheckInStatus($eid, 1);
+                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                $host = $_SERVER['HTTP_HOST'];
+                $baseUrl = $protocol . '://' . $host. '/auth?id='. $eid;
+                renderView("checkIn_event_get", ['url' => $baseUrl]);
+                break;
             default:
                 http_response_code(400);
                 break;

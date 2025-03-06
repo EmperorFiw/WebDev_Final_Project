@@ -6,9 +6,20 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
     exit;
 }
 
-$eventID = $_GET['id'];
+$eventID = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$event = new Events();
+$users = new Users();
+
+$eventData = $event->getEventDataByID($eventID);
+
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
-if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
+if (empty($eventData) || !$eventData['checkIn'])
+{
+    http_response_code(403);
+    echo
+    exit;
+}
+else if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     echo '<script>
         document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
@@ -26,7 +37,7 @@ if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
 }
 else {
     $username = $_SESSION['username'];
-    if ($event->getEventStatus($evenID) == "กิจกรรมจบ")
+    if ($event->getEventStatus($eventID) == "กิจกรรมจบ")
     {
         echo '<script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -43,7 +54,7 @@ else {
         </script>';
         exit; 
     }
-    if (!$event->isCheckInOpen($evenID)) {
+    if (!$event->isCheckInOpen($eventID)) {
        http_response_code(403); 
        exit;
     }
@@ -62,11 +73,10 @@ else {
             });
         </script>';
     }
-    else if (!$event->isCheckInSucc($username, $eventID)){
-        $eventName = $event->getEventName($evenID);
-        $users = new Users();
+    else if (!$users->isCheckInSucc($username, $eventID)){
+        $eventName = $event->getEventName($eventID);
         $uid = $user->getUserIDByName($username);
-        if ($users->updateUsersInt("checkIn", 1, $uid))
+        if ($users->checkIn($uid, $eventID))
         echo '<script>
             document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({
