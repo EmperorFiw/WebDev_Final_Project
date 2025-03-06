@@ -7,9 +7,15 @@ $users = new Users();
 $events = new Events();
 $uname = $users->getName();
 
-if (empty($eid) || !$events->getEventDataByID($eid))
+if (!$events->isOwnerEvent($_SESSION['username'], $eid))
 {
     http_response_code(403);
+    exit;
+
+}
+if (empty($eid) || !$events->getEventDataByID($eid))
+{
+    http_response_code(400);
     exit;
 }
 

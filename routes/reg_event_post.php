@@ -13,6 +13,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $events = new Events();
     $user = new Users();
 
+    if (!$events->isOwnerEvent($_SESSION['username'], $eid))
+{
+    http_response_code(403);
+    exit;
+}
+
     $eventData = $events->getEventDataByID($eid);
     if (isset($eventData[0])) {
         $eventData = $eventData[0];

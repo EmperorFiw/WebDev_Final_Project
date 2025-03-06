@@ -16,16 +16,18 @@ require_once INCLUDES_DIR . '/router.php';
 require_once INCLUDES_DIR . '/view.php';
 require_once INCLUDES_DIR . '/db.php';
 
-const PUBLIC_ROUTES = ['/', '/login', '/register', '/home', '/event_details', '/auth'];
+const PUBLIC_ROUTES = ['/', '/login', '/register', '/logout', '/home', '/event_details', '/auth'];
 
-if (in_array(strtolower($_SERVER['REQUEST_URI']), PUBLIC_ROUTES)) {
-    dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+$request_uri = strtok($_SERVER['REQUEST_URI'], '?');  // ตัด query string ออก
+
+if (in_array(strtolower($request_uri), PUBLIC_ROUTES)) {
+    dispatch($request_uri, $_SERVER['REQUEST_METHOD']);
     exit;
 } elseif (isset($_SESSION['timestamp']) && time() - $_SESSION['timestamp'] < 10 * 60) {
     // 10 minutes.
     $unix_timestamp = time();
     $_SESSION['timestamp'] = $unix_timestamp;
-    dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+    dispatch($request_uri, $_SERVER['REQUEST_METHOD']);
 } else {
     unset($_SESSION['timestamp']);
     unset($_SESSION['username']);

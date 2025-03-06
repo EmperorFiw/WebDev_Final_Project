@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+      
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $event_id = $_POST['event_id'] ?? ''; 
     $event_name = $_POST['event_name'] ?? '';
@@ -14,12 +15,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $details = $_POST['details'] ?? '';
     $images = $_FILES['images'] ?? '';
 
+    $events = new Events();
+    $users = new Users();
+    
+    if (!$events->isOwnerEvent($_SESSION['username'], $event_id))
+    {
+        http_response_code(403);
+        exit;
+    }
     if (!empty($event_id) && 
         (!empty($event_name) || !empty($max_participants) || !empty($event_start_date) || !empty($event_end_date) || 
          !empty($event_start_time) || !empty($event_end_time) || !empty($reg_start_date) || !empty($reg_end_date) || !empty($details))) 
     {
         $event_id = (int)$event_id;
-        $events = new Events();
         $eventData = $events->getEventDataByID($event_id);
         if (isset($eventData[0])) {
             $eventData = $eventData[0];
@@ -52,8 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $imagePathsString = '';  
         }
 
-        $events = new Events();
-        $users = new Users();
         $max_participants = intval($max_participants);
         $ownerID = $users->getUserIDByName($_SESSION['username']);
         $result = $events->updateEvent($event_id, $event_name, $ownerID, $max_participants, $event_start_date, $event_end_date, 

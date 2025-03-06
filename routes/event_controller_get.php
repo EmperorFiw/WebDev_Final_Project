@@ -4,10 +4,17 @@ declare(strict_types=1);
 $events = new Events();
 $users = new Users();
 
+
 $uid = (int)($_GET['uid'] ?? null);
 $action = $_GET['action'] ?? '';
 $eid = (int)$_GET['eid'] ?? null;
 $uname = $users->getName();
+
+if (!$events->isOwnerEvent($_SESSION['username'], $eid))
+{
+    http_response_code(403);
+    exit;
+}
 
 if (!empty($action)) {
     if (!empty($eid)) {

@@ -4,12 +4,23 @@ $uid = (int)$_POST['uid'] ?? null;
 $eid = (int)$_POST['eid'] ?? null;
 $action = $_POST['action'] ?? null;
 
+if (!$events->isOwnerEvent($_SESSION['username'], $eid))
+{
+    http_response_code(403);
+    exit;
+}
 
 if ($uid && $eid && in_array($action, ['approve', 'reject'])) {
     $join_state = ($action === 'approve') ? 1 : 0; // 1 = อนุมัติ, 0 = ปฏิเสธ
 
-    $users = new Users();
     $events = new Events();
+    $users = new Users();
+    
+    if (!$events->isOwnerEvent($_SESSION['username'], $eid))
+    {
+        http_response_code(403);
+        exit;
+    }
     $uname = $users->getName();
     
     if (empty($eid) || !$events->getEventDataByID($eid))
