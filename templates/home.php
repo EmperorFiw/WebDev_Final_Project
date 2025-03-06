@@ -5,12 +5,12 @@ $events_history = $data['historyData'];
 
 <title>Home</title>
 <form action="/home" method="POST">
-    <div class="w-full flex justify-between items-center px-10 py-4">
+    <div class="w-full flex flex-col md:flex-row justify-between items-center px-4 md:px-10 py-4 space-y-4 md:space-y-0">
         <div class="left">
             <h1 class="text-xl font-semibold">กิจกรรม</h1> 
         </div>
-        <div class="center flex items-center space-x-2">
-            <div class="relative w-full max-w-sm">
+        <div class="center flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-2 w-full md:w-auto">
+            <div class="relative w-full md:max-w-sm">
                 <input type="text" name="keyword" placeholder="ค้นหากิจกรรม"
                     class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full pr-10">
                 <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
@@ -18,21 +18,21 @@ $events_history = $data['historyData'];
                 </span>
             </div>
             <input type="date" name="date"
-                class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all pr-10">
-            <button class="bg-[#301580] text-white px-4 py-2 rounded-2xl hover:bg-blue-600">ค้นหา</button>
+                class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full md:w-auto pr-10">
+            <button class="bg-[#301580] text-white px-4 py-2 rounded-2xl hover:bg-blue-600 w-full md:w-auto">ค้นหา</button>
         </div>
     </div>
 </form> 
  
 <!-- ประวัติเข้าร่วม  -->
 <?php if (!empty($events_history) && !empty($_SESSION['username'])): ?>
-<div class="container mx-auto px-10 mt-4 p-4 flex flex-col items-center">
+<div class="container mx-auto px-4 md:px-10 mt-4 p-4 flex flex-col items-center">
     <!-- Table Header -->
     <table class="min-w-full table-auto border-collapse bg-white shadow-lg text-center">
         <thead>
             <tr class="bg-[#301580] text-white">
-                <th class="px-6 py-3 text-start ">กิจกรรมที่ขอเข้าร่วม</th>
-                <th class="px-6 py-3">สถานะ</th>
+                <th class="px-4 md:px-6 py-3 text-start">กิจกรรมที่ขอเข้าร่วม</th>
+                <th class="px-4 md:px-6 py-3">สถานะ</th>
             </tr>
         </thead>
         <tbody id="eventTableBody" class="bg-[#B5CFF8]">
@@ -40,7 +40,7 @@ $events_history = $data['historyData'];
     </table>
 
     <!-- Pagination -->
-    <div class="mt-3 grid grid-cols-3 items-center w-full text-white">
+    <div class="mt-3 grid grid-cols-1 md:grid-cols-3 items-center w-full text-white">
         <div class="page text-lg text-start">
             <span id="pageNumber">หน้า <?= $data['currentPage'] ?></span>
             <span id="totalPages">จาก <?= $data['totalPages'] ?> หน้า</span>
@@ -48,7 +48,7 @@ $events_history = $data['historyData'];
 
         <div></div> 
     
-        <div class="flex justify-end gap-2">
+        <div class="flex justify-end gap-2 mt-4 md:mt-0">
             <button id="prevPage" class="bg-[#301580] text-white px-5 py-2 rounded-lg hover:bg-blue-700" disabled>
                 ก่อนหน้า
             </button>
@@ -62,12 +62,12 @@ $events_history = $data['historyData'];
 
 <!-- ข้อมูลกิจกรรม  -->
 <div class="mt-8">
-    <div class="relative flex items-center px-10">
+    <div class="relative flex items-center px-4 md:px-10">
         <i class="fas fa-bullhorn text-xl text-[#B5CFF8] mr-2"></i>
         <span class="text-white text-lg">กิจกรรมทั้งหมดที่กำลังเผยแพร่</span>
     </div>
 </div>
-<div class="grid grid-cols-3 gap-4 mt-8 mb-10 px-10">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8 mb-10 px-4 md:px-10">
     <?php 
         if (!empty($data['not_found'])) {
             echo "<p class='text-white'>ไม่พบข้อมูล</p>";
@@ -76,7 +76,7 @@ $events_history = $data['historyData'];
         } else {
             foreach ($data['data'] as $event) {
     ?>
-    <div class="bg-[#301580] rounded-lg shadow-lg p-4 flex text-white">
+    <div class="bg-[#301580] rounded-lg shadow-lg p-4 flex flex-col md:flex-row text-white">
         <div class="relative w-full h-[272px]">
             <div class="carousel relative">
                 <div class="carousel-inner relative overflow-hidden w-full">
@@ -96,7 +96,7 @@ $events_history = $data['historyData'];
             </div>
         </div>
         
-        <div class="pl-4 flex-grow">
+        <div class="pl-4 flex-grow mt-4 md:mt-0">
             <h3 class="text-xl font-semibold"><?= htmlspecialchars($event['event_name']); ?></h3>
             <?php
                 $startTime = new DateTime($event['event_start_time']);
