@@ -31,7 +31,7 @@ document.querySelectorAll('.carousel').forEach((carousel, index) => {
 document.addEventListener('DOMContentLoaded', function() {
     const delBtn = document.getElementById('delete-image-edit');
     
-    console.log('Button:', delBtn); // ตรวจสอบว่า button ถูกโหลดหรือไม่
+    // console.log('Button:', delBtn); // ตรวจสอบว่า button ถูกโหลดหรือไม่
 
     if ( delBtn) {
         delBtn.addEventListener('click', function(event) {
@@ -51,5 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
     {
         showSlide(0);
     }
-
+    
 });
+

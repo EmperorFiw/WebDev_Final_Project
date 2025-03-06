@@ -93,8 +93,7 @@
     </div>
 <div> 
 
-<script src="/assets/js/uploadImage.js"></script>
-<script src="/assets/js/slide.js"></script>
+<script src="/assets/js/editImage.js"></script>
 <script>
     function btnBack() {
         window.location.href = 'my_events';
