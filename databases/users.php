@@ -125,6 +125,8 @@ class Users {
             $user = $result->fetch_assoc();
     
             if (password_verify($password, $user['password'])) {
+                $unix_timestamp = time();
+                $_SESSION['timestamp'] = $unix_timestamp;
                 $_SESSION['username'] = $user['username'];
                 return "เข้าสู่ระบบสำเร็จ!";
             } else {
