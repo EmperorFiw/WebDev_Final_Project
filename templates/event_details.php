@@ -4,13 +4,13 @@ if (isset($data['data']) && !empty($data['data'])):
     $event = $data['data'];
 ?>
 <div class="mt-8">
-    <div class="relative flex items-center px-10">
-        <h1 class="text-2xl"><?= htmlspecialchars($event['event_name']) ?></h1>
+    <div class="relative flex items-center px-4 md:px-10">
+        <h1 class="text-xl md:text-2xl"><?= htmlspecialchars($event['event_name']) ?></h1>
     </div>
 </div>
-<div class="flex px-10 mt-8">
-    <div class="bg-[#301580] rounded-lg shadow-lg flex text-white w-full">
-        <div class="relative w-full h-[512px]">
+<div class="flex flex-col md:flex-row px-4 md:px-10 mt-8">
+    <div class="bg-[#301580] rounded-lg shadow-lg flex flex-col md:flex-row text-white w-full">
+        <div class="relative w-full h-64 md:h-[512px]">
             <div class="carousel relative">
                 <div class="carousel-inner relative overflow-hidden w-full">
                     <?php
@@ -19,7 +19,7 @@ if (isset($data['data']) && !empty($data['data'])):
                             $activeClass = ($index === 0) ? 'active' : ''; 
                     ?>
                     <div class="carousel-item <?= htmlspecialchars($activeClass); ?>">
-                        <img src="<?= htmlspecialchars($image); ?>" alt="Image <?= $index + 1; ?>" class="w-full h-[512px] object-cover  rounded-lg">
+                        <img src="<?= htmlspecialchars($image); ?>" alt="Image <?= $index + 1; ?>" class="w-full h-64 md:h-[512px] object-cover rounded-lg">
                     </div>
                     <?php } ?>
                 </div>
@@ -30,11 +30,11 @@ if (isset($data['data']) && !empty($data['data'])):
         
         <div class="pl-4 flex-grow w-full">
             <div class="flex justify-between items-center px-4">
-                <h1 class="text-2xl font-semibold">รายละเอียดกิจกรรม</h1>
+                <h1 class="text-xl md:text-2xl font-semibold">รายละเอียดกิจกรรม</h1>
                 <button class="mt-4 text-white px-4 py-2 rounded-2xl disabled <?= $event['status'] ? 'bg-green-500' : 'bg-red-500' ?>"><?= htmlspecialchars($event[1]['status']) ?></button>
             </div>
             <div class="px-4">
-                <p class="mt-4 text-md">
+                <p class="mt-4 text-sm md:text-md">
                     <i class="fas fa-info-circle mr-2"></i>
                     <?= htmlspecialchars($event['description']); ?>
                 </p>
@@ -63,7 +63,7 @@ if (isset($data['data']) && !empty($data['data'])):
                     จำนวนที่รับสมัคร <?= htmlspecialchars($event['capacity']); ?> ลงทะเบียนแล้ว <?= htmlspecialchars($event[0]['registered']); ?>
                 </p>
             </div>
-            <div class="flex justify-between items-center px-4 mt-4">
+            <div class="flex flex-col md:flex-row justify-between items-center px-4 mt-4">
                 <form action="<?= !empty($_SESSION['username']) ? '/reg_event' : '/login' ?>" method="GET">
                     <?php 
                         if (!empty($_SESSION['username']))
