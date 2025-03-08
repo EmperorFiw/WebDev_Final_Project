@@ -1,3 +1,9 @@
+<?php
+
+$_SESSION['token'] = bin2hex(random_bytes(32));
+$token = $_SESSION['token'];
+
+?>
 <title>Register</title>
  <div class="min-h-screen flex items-center justify-center">
     <div class="w-full max-w-lg bg-[#151541] text-white p-8 rounded-lg shadow-lg">
@@ -23,7 +29,7 @@
                     <label for="phone" class="block text-sm font-medium">เบอร์โทรศัพท์</label>
                     <input type="text" id="phone" name="phone" class="w-full mt-1 p-3 bg-gray-700 text-white rounded-md focus:ring focus:ring-gray-400 outline-none" placeholder="Enter phone number" required>
                 </div>
-
+                <input type="hidden" name="token" value="<?= $token ?>">
                 <div class="flex justify-center mt-4">
                     <button type="submit" class="w-full bg-[#301580] text-white py-2 rounded-md hover:bg-purple-800 text-lg">สมัครสมาชิก</button>
                 </div>

@@ -115,6 +115,8 @@ class Users {
         $stmt->bind_param("ssss", $username, $hashedPassword, $email, $phone);
     
         if ($stmt->execute()) {
+            $unix_timestamp = time();
+            $_SESSION['timestamp'] = $unix_timestamp;
             $_SESSION['username'] = $username;
             return "ลงทะเบียนสำเร็จ!";
         } else {
