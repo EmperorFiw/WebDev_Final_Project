@@ -35,7 +35,7 @@ else if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     exit;
 }
 else {
-    $uid = $users->getUserIDByName($username);
+    $uid = $users->getUserIDByName($_SESSION['username']);
 
     if ($event->getEventStatus($eventID) == "กิจกรรมจบ")
     {
