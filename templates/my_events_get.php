@@ -85,7 +85,7 @@
     <?php if (isset($data['deleteID'])): ?>
     <form id="deleteForm" action="delete_event" method="POST" class="hidden">
         <input type="hidden" name="eid" value="<?= $data['deleteID'] ?>">
-    </form>
+    </form> 
     <?php endif; ?>
     <script>
         <?= $data['alertScript']?>
