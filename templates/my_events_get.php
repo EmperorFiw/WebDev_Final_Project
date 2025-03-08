@@ -9,7 +9,8 @@
             <h1 class="text-2xl font-bold">กิจกรรมของฉัน</h1>
         </div>
         <div class="event w-full md:w-auto">
-            <form action="/event_controller" method="GET" class="flex flex-wrap gap-2 justify-center">
+        <!-- <form action="/event_controller" method="GET" class="grid grid-cols-2 md:grid-cols-8 gap-4 justify-center"> -->
+            <form action="/event_controller" method="GET" class="grid grid-cols-1 gap-4 md:flex md:flex-wrap md:gap-4 justify-center">
                 <input type="hidden" name="eid" value="<?= htmlspecialchars($_SESSION['selected_event'] ?? '') ?>">
                 <button type="submit" name="action" value="approve"
                     class="flex items-center gap-2 bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition">

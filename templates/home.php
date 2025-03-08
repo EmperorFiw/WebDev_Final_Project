@@ -1,6 +1,8 @@
 <?php
-$events_history = $data['historyData'];
-// print_r($events_history);
+if (!empty($data['historyData']))
+    $events_history = $data['historyData'];
+else
+    $events_history = [];
 ?>
 
 <title>Home</title>
@@ -36,6 +38,7 @@ $events_history = $data['historyData'];
             </tr>
         </thead>
         <tbody id="eventTableBody" class="bg-[#B5CFF8]">
+            <!-- ข้อมูลตารางจะถูกเพิ่มที่นี่ -->
         </tbody>
     </table>
 
@@ -47,7 +50,7 @@ $events_history = $data['historyData'];
         </div>
 
         <div></div> 
-    
+
         <div class="flex justify-end gap-2 mt-4 md:mt-0">
             <button id="prevPage" class="bg-[#301580] text-white px-5 py-2 rounded-lg hover:bg-blue-700" disabled>
                 ก่อนหน้า
@@ -122,7 +125,6 @@ $events_history = $data['historyData'];
     ?>
 </div>
 <script src="/assets/js/slide.js"></script>
-
 <script>
 const events_history = <?php echo json_encode($events_history); ?>;
 
@@ -142,20 +144,21 @@ function renderTable() {
         row.classList.add("border-b");
 
         const nameCell = document.createElement("td");
-        nameCell.classList.add("px-4", "py-2", "text-left", "text-black");
+        nameCell.classList.add("px-4", "py-2", "text-left", "text-black", "text-sm", "md:text-base");
         nameCell.textContent = event.event_name;
         row.appendChild(nameCell);
 
         const statusCell = document.createElement("td");
         statusCell.classList.add("px-4", "py-2", "text-center");
-  
-        const statusButton = document.createElement("button");
-        statusButton.classList.add("w-1/3", "px-4", "py-2", "text-center", "rounded-2xl", "text-white");
 
+        const statusButton = document.createElement("button");
+        statusButton.classList.add("w-full", "px-4", "py-2", "text-center", "rounded-2xl", "text-white", "text-sm", "md:text-base");
+
+        let statusText, statusColor;
         switch (event.join_state) {
             case 0:
                 statusText = "รอดำเนินการ";
-                statusColor = "bg-yellow-500"; 
+                statusColor = "bg-yellow-500";
                 break;
             case 1:
                 statusText = "อนุมัติ";
@@ -167,7 +170,7 @@ function renderTable() {
                 break;
             case 3:
                 statusText = "ไม่ได้เข้าร่วม";
-                statusColor = "bg-red-500"; 
+                statusColor = "bg-red-500";
                 break;
             case 4:
                 statusText = "ถูกปฏิเสธ";
@@ -175,8 +178,9 @@ function renderTable() {
                 break;
             default:
                 statusText = "ไม่ทราบสถานะ";
-                statusColor = "bg-gray-500"; 
+                statusColor = "bg-gray-500";
         }
+
         statusButton.textContent = statusText;
         statusButton.classList.add(statusColor);
 
@@ -184,7 +188,6 @@ function renderTable() {
         row.appendChild(statusCell);
         tableBody.appendChild(row);
     });
-
 
     document.getElementById("pageNumber").textContent = `หน้า ${currentPage}`;
 
