@@ -156,8 +156,8 @@ class Events {
         string $event_end_date, string $event_start_time, string $event_end_time, string $reg_start_date,
         string $reg_end_date, string $details, string $imageData): string | int
     {
-        if (!is_numeric($capacity) || $capacity <= 0) {
-            return "จำนวนผู้เข้าร่วมต้องมากกว่า 0";
+        if (!is_numeric($capacity) || $capacity <= 0 || $capacity >= 10000) {
+            return "จำนวนผู้เข้าร่วมต้องมากกว่า 0 และไม่เกิ 10,000";
         }
         $event_start_time = date('H:i', strtotime($event_start_time));
         $event_end_time = date('H:i', strtotime($event_end_time));
@@ -185,9 +185,9 @@ class Events {
             return "วันที่เริ่มกิจกรรมต้องไม่มากกว่าวันที่สิ้นสุดกิจกรรม";
         }
 
-        if (strtotime($reg_start_date) > strtotime($reg_end_date)) {
-            return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
-        }
+        // if (strtotime($reg_start_date) > strtotime($reg_end_date)) {
+        //     return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
+        // }
 
         // if (strtotime($reg_start_date) < strtotime($event_start_date) || strtotime($reg_start_date) > strtotime($event_end_date)) {
         //     return "วันที่เริ่มลงทะเบียนต้องอยู่ภายในช่วงวันที่กิจกรรม";
@@ -212,8 +212,8 @@ class Events {
         string $event_end_date, string $event_start_time, string $event_end_time, string $reg_start_date,
         string $reg_end_date, string $details, string $imageData): string
     {
-        if (!is_numeric($capacity) || $capacity <= 0) {
-            return "จำนวนผู้เข้าร่วมต้องมากกว่า 0";
+        if (!is_numeric($capacity) || $capacity <= 0 || $capacity >= 10000) {
+            return "จำนวนผู้เข้าร่วมต้องมากกว่า 0 และไม่เกิ 10,000";
         }
         $event_start_time = date('H:i', strtotime($event_start_time));
         $event_end_time = date('H:i', strtotime($event_end_time));
@@ -236,13 +236,13 @@ class Events {
         }
 
         // ตรวจสอบความถูกต้องของช่วงเวลา
-        if (strtotime($event_start_date) > strtotime($event_end_date)) {
-            return "วันที่เริ่มกิจกรรมต้องไม่มากกว่าวันที่สิ้นสุดกิจกรรม";
-        }
+        // if (strtotime($event_start_date) > strtotime($event_end_date)) {
+        //     return "วันที่เริ่มกิจกรรมต้องไม่มากกว่าวันที่สิ้นสุดกิจกรรม";
+        // }
 
-        if (strtotime($reg_start_date) > strtotime($reg_end_date)) {
-            return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
-        }
+        // if (strtotime($reg_start_date) > strtotime($reg_end_date)) {
+        //     return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
+        // }
 
         // if (strtotime($reg_start_date) < strtotime($event_start_date) || strtotime($reg_start_date) > strtotime($event_end_date)) {
         //     return "วันที่เริ่มลงทะเบียนต้องอยู่ภายในช่วงวันที่กิจกรรม";
