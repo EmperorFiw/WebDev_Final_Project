@@ -39,18 +39,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $imagePathsString = implode(',', $imageData);  // เชื่อมเส้นทางไฟล์ทั้งหมดเป็น string
-
-            $events = new Events();
-            $users = new Users();
-            $max_participants = intval($max_participants);
-            $ownerID = $users->getUserIDByName($_SESSION['username']);
-            $result = $events->createEvent($event_name, $ownerID, $max_participants, $event_start_date, $event_end_date, 
-                                 $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, $details, $imagePathsString);  // ใช้ $imagePathsString
-
-            if (is_int($result)) {
-                swalAlert('สร้างกิจกรรมสำเร็จ!', 'success', 'create_event_get', 'my_events');
-            } elseif (is_string($result)) {
-                swalAlert($result, 'error', 'create_event_get', 'create_event');
+            if (empty($imagePathsString))
+            {
+                swalAlertWithData('รูปภาพห้ามว่างเปล่า!', 'error', 'edit_event_get', 'my_events', $eventData, true);
+            }
+            else
+            {
+                $events = new Events();
+                $users = new Users();
+                $max_participants = intval($max_participants);
+                $ownerID = $users->getUserIDByName($_SESSION['username']);
+                $result = $events->createEvent($event_name, $ownerID, $max_participants, $event_start_date, $event_end_date, 
+                                     $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, $details, $imagePathsString);  // ใช้ $imagePathsString
+    
+                if (is_int($result)) {
+                    swalAlert('สร้างกิจกรรมสำเร็จ!', 'success', 'create_event_get', 'my_events');
+                } elseif (is_string($result)) {
+                    swalAlert($result, 'error', 'create_event_get', 'create_event');
+                }
             }
         } else {
             swalAlert('กรุณาอัปโหลดรูปภาพ', 'error', 'create_event_get', 'create_event');
