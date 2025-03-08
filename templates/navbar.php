@@ -26,10 +26,10 @@
 </head>
 <body class="bg-[#1e1640]">
     <nav class="flex justify-between items-center border-b-2 border-white">
-        <div class="l-box px-10">
+        <div class="l-box px-4 md:px-10">
             <h1 class="text-white text-2xl"><a href="/home">Activity</a></h1>
         </div>
-        <div class="r-box flex flex-cols cursor-pointer px-10">
+        <div class="r-box flex flex-cols cursor-pointer p-2 md:px-10">
             <?php 
                 echo '<h1 class="text-white p-2 hover:text-blue-600"><a href="/home">หน้าหลัก</a></h1>';
                 if (!empty($_SESSION['username'])) {
@@ -37,10 +37,10 @@
                     echo '
                         <div class="flex items-center relative">
                             <!-- ไอคอนผู้ใช้ -->
-                            <i class="fas fa-user-circle text-white text-3xl ml-4 mr-2 cursor-pointer" onclick="openModal()"></i>
+                            <i class="fas fa-user-circle text-white text-3xl ml-4 md:mr-2 cursor-pointer" onclick="openModal()"></i>
                             
                             <!-- ชื่อผู้ใช้ -->
-                            <span class="text-white text-lg font-semibold p-2 hover:text-blue-600 cursor-pointer" onclick="openModal()">' . htmlspecialchars($username) . '</span>
+                            <span class="hidden md:block text-white text-lg font-semibold p-2 hover:text-blue-600 cursor-pointer" onclick="openModal()">' . htmlspecialchars($username) . '</span>
                             
                             <!-- Modal ที่แสดงรายละเอียดผู้ใช้ -->
                             <div id="userModal" class="absolute top-full mt-2 right-0 bg-white p-6 rounded-lg w-64 hidden shadow-lg transform translate-x-full transition-all duration-300 z-50">
