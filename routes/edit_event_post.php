@@ -3,7 +3,7 @@ declare(strict_types=1);
 
       
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $event_id = $_POST['event_id'] ?? ''; 
+    $event_id = isset($_POST['event_id']) ? (int)$_POST['event_id'] : 0;
     $event_name = $_POST['event_name'] ?? '';
     $max_participants = $_POST['max_participants'] ?? '';
     $event_start_date = $_POST['event_start_date'] ?? '';
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $events = new Events();
     $users = new Users();
-    
+
     if (!$events->isOwnerEvent($_SESSION['username'], $event_id))
     {
         http_response_code(403);
@@ -39,9 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
             foreach ($images['tmp_name'] as $key => $tmp_name) {
 
-                $imageInfo = getimagesize($tmp_name);
-                if ($imageInfo !== false) {
+                $mimeType = mime_content_type($tmp_name);
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
+                if (in_array($mimeType, $allowedTypes)) {
                     $fileExtension = pathinfo($images['name'][$key], PATHINFO_EXTENSION);
                     $randomString = bin2hex(random_bytes(8));  
                     $newFileName = $event_name . '_' . $randomString . '.' . $fileExtension; 
@@ -53,22 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     swalAlertWithData('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'edit_event_get', 'edit_event', $eventData, true);
                 }
+
             }
 
             $imagePathsString = implode(',', $imageData); 
         } else {
             $imagePathsString = '';  
         }
-
-        $max_participants = intval($max_participants);
-        $ownerID = $users->getUserIDByName($_SESSION['username']);
-        $result = $events->updateEvent($event_id, $event_name, $ownerID, $max_participants, $event_start_date, $event_end_date, 
-                                       $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, $details, $imagePathsString);
-
-        if ($result === 'แก้ไขกิจกรรมสำเร็จ!') {
-            swalAlertWithData($result, 'success', 'edit_event_get', 'my_events', $eventData, true);
-        } elseif (is_string($result)) {
-            swalAlertWithData($result, 'error', 'edit_event_get', 'my_events', $eventData, true);
+        if (empty($imagePathsString))
+        {
+            swalAlertWithData('รูปภาพห้ามว่างเปล่า!', 'error', 'edit_event_get', 'my_events', $eventData, true);
+        }
+        else
+        {
+            $max_participants = intval($max_participants);
+            $ownerID = $users->getUserIDByName($_SESSION['username']);
+            $result = $events->updateEditEvent($event_id, $event_name, $ownerID, $max_participants, $event_start_date, $event_end_date, 
+                                           $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, $details, $imagePathsString);
+    
+            if ($result === 'แก้ไขกิจกรรมสำเร็จ!') {
+                swalAlertWithData($result, 'success', 'edit_event_get', 'my_events', $eventData, true);
+            } elseif (is_string($result)) {
+                swalAlertWithData($result, 'error', 'edit_event_get', 'my_events', $eventData, true);
+            }
         }
     } else {
         swalAlertWithData('ข้อมูลไม่ครบถ้วน', 'error', 'edit_event_get', 'my_events', $eventData, true);

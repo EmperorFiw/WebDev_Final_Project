@@ -11,14 +11,11 @@ $event = new Events();
 $users = new Users();
 
 $eventData = $event->getEventDataByID($eventID);
-$username = $_SESSION['username'];
-$uid = $users->getUserIDByName($username);
 
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
 if (empty($eventData) || !$eventData['checkIn'])
 {
     http_response_code(403);
-    echo
     exit;
 }
 else if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
@@ -38,6 +35,8 @@ else if (!isset($_SESSION['username']) || empty($_SESSION['username'])) {
     exit;
 }
 else {
+    $uid = $users->getUserIDByName($username);
+
     if ($event->getEventStatus($eventID) == "กิจกรรมจบ")
     {
         echo '<script>

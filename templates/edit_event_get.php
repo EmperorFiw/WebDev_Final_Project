@@ -66,9 +66,12 @@
                             $images = explode(',', $event['image']);
                             foreach ($images as $index => $image) {
                                 $activeClass = ($index === 0) ? '' : 'hidden'; // แสดงเฉพาะรูปแรก
-                                echo '<div class="carousel-item absolute inset-0 w-full h-full ' . htmlspecialchars($activeClass) . '">
-                                        <img src="' . htmlspecialchars($image) . '" alt="Image ' . ($index + 1) . '" class="w-full h-full object-cover">
-                                    </div>';
+                                if (!empty($image))
+                                {
+                                    echo '<div class="carousel-item absolute inset-0 w-full h-full ' . htmlspecialchars($activeClass) . '">
+                                            <img src="' . htmlspecialchars($image) . '" alt="Image ' . ($index + 1) . '" class="w-full h-full object-cover">
+                                        </div>';
+                                }
                             } 
                         ?>
                     </div>
@@ -79,9 +82,9 @@
                 <button id="addImg" type="button" class="cursor-pointer bg-[#301580] mt-4 md:mt-8 p-2 rounded-lg w-full text-center text-white font-bold hover:bg-[#151541] transition">
                     เพิ่มรูปภาพ
                 </button>
-                <form id="deleteForm" action="/event_controller" method="get" class="w-full">
-                    <input type="hidden" name="action" value="delImg">
-                    <input type="hidden" name="eid" value="<?= htmlspecialchars($event['eid']) ?>">
+                <form action="" class="hidden"><p class="hidden">hiden</p></form>
+                <form id="deleteForm" action="/delete_image" method="POST" class="w-full">
+                    <input type="hidden" name="eid" value="<?= (int) $event['eid'] ?>">
                     <button type="submit" id="delete-image-edit" class="bg-[#750002] mt-3 p-2 rounded-lg w-full text-white font-bold hover:bg-red-700 transition">
                         ลบรูปภาพ
                     </button>
@@ -93,18 +96,62 @@
 
 <script src="/assets/js/editImage.js"></script>
 <script>
+    document.getElementById('delete-image-edit').addEventListener('click', function(event) {
+        event.preventDefault(); // หยุดการส่งฟอร์มปกติ
+
+        // ใช้ SweetAlert ถามผู้ใช้ก่อน
+        Swal.fire({
+            title: "คุณแน่ใจหรือไม่?",
+            text: "คุณต้องการลบรูปภาพนี้จริงๆ หรือไม่?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: 'ลบ',
+            cancelButtonText: 'ยกเลิก',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ดึงฟอร์มที่ซ่อนอยู่
+                var form = document.getElementById('deleteForm');
+
+                if (form instanceof HTMLFormElement) {
+                    // ดึง URL ของรูปภาพที่อยู่ใน div ที่มีคลาส active
+                    var activeItem = document.querySelector('.carousel-item.active');
+
+                    // เช็คว่าเจอ item หรือไม่
+                    if (activeItem) {
+                        var imageUrl = activeItem.querySelector('img').src; // ดึง src ของภาพที่อยู่ใน active div
+                        // เพิ่ม URL ของภาพใน input ซ่อน
+                        var imageUrlInput = document.createElement('input');
+                        imageUrlInput.type = 'hidden';
+                        imageUrlInput.name = 'imageUrl';
+                        imageUrlInput.value = imageUrl; // ตั้งค่า URL ไปใน input ที่ซ่อน
+                        // เพิ่ม input นี้ไปในฟอร์ม
+                        form.appendChild(imageUrlInput);
+                        // ส่งฟอร์มไปด้วย POST method
+                        form.submit(); // ส่งฟอร์ม
+                        Swal.fire({
+                            title: "ลบรูปภาพสำเร็จ",
+                            icon: "success",
+                        });
+                    } else {
+                        console.error('ไม่พบรูปภาพที่มีคลาส active');
+                        Swal.fire({
+                            title: "ไม่พบรูปภาพที่ต้องการลบ!", 
+                            icon: "error",
+                        });
+                    }
+                } else {
+                    console.error('Form not found or invalid');
+                }
+            } 
+        });
+    });
     function btnBack() {
         window.location.href = 'my_events';
     }
 </script>
 
 <?php if (isset($data['alertScript'])): ?>
-    <?php if (isset($data['deleteID'])): ?>
-    <form id="deleteForm" action="delete_image" method="POST" class="hidden">
-        <input type="hidden" name="eid" value="<?= $data['deleteID'] ?>">
-        <input type="hidden" name="eid" value="<?= $data['img'] ?>">
-    </form>
-    <?php endif; ?>
     <script>
         <?= $data['alertScript']?>
     </script>

@@ -404,5 +404,128 @@ class Events {
         $stmt->execute();
     }
     
+    public function updateEditEvent(int $event_id, string $event_name, int $ownerID, int $capacity, string $event_start_date, 
+        string $event_end_date, string $event_start_time, string $event_end_time, string $reg_start_date,
+        string $reg_end_date, string $details, string $imageData): string
+    {
+        if (!is_numeric($capacity) || $capacity <= 0) {
+            return "จำนวนผู้เข้าร่วมต้องมากกว่า 0";
+        }
+        $event_start_time = date('H:i', strtotime($event_start_time));
+        $event_end_time = date('H:i', strtotime($event_end_time));
+        // ป้องกัน XSS
+        $details = htmlspecialchars($details, ENT_QUOTES, 'UTF-8');
+
+        // ตรวจสอบว่า imageData เป็น string หรือไม่
+        $imagePathsString = is_array($imageData) ? implode(',', $imageData) : $imageData;
+
+        // ตรวจสอบวันที่ให้ถูกต้อง
+        if (!strtotime($event_start_date) || !strtotime($event_end_date) || 
+            !strtotime($reg_start_date) || !strtotime($reg_end_date)) {
+            return "รูปแบบวันที่ไม่ถูกต้อง";
+        }
+
+        // ตรวจสอบรูปแบบเวลา
+        if (!preg_match("/^([01]\d|2[0-3]):([0-5]\d)$/", $event_start_time) || 
+            !preg_match("/^([01]\d|2[0-3]):([0-5]\d)$/", $event_end_time)) {
+            return "รูปแบบเวลาต้องเป็น(ชั่วโมง:นาที) และชั่วโมงต้องอยู่ระหว่าง 00 ถึง 23";
+        }
+
+        // // ตรวจสอบความถูกต้องของช่วงเวลา
+        // if (strtotime($event_start_date) > strtotime($event_end_date)) {
+        //     return "วันที่เริ่มกิจกรรมต้องไม่มากกว่าวันที่สิ้นสุดกิจกรรม";
+        // }
+
+        // if (strtotime($reg_start_date) > strtotime($reg_end_date)) {
+        //     return "วันที่เริ่มลงทะเบียนต้องไม่มากกว่าวันที่สิ้นสุดการลงทะเบียน";
+        // }
+
+        // ตรวจสอบว่า event_id ที่ต้องการอัพเดทมีอยู่ในฐานข้อมูลหรือไม่
+        $checkQuery = "SELECT * FROM events WHERE eid = ?";
+        $stmt = $this->conn->prepare($checkQuery);
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            return "ไม่พบกิจกรรมที่ต้องการอัพเดท";
+        }
+
+        // ถ้ามีการส่งค่า imageData มาใหม่
+        if (!empty($imageData)) {
+            $query = "UPDATE events SET
+                event_name = ?, 
+                owner_id = ?, 
+                event_start_date = ?, 
+                event_end_date = ?, 
+                event_start_time = ?, 
+                event_end_time = ?, 
+                reg_start_date = ?, 
+                reg_end_date = ?, 
+                description = ?, 
+                image = CASE 
+                            WHEN image IS NULL OR image = '' THEN ? 
+                            ELSE CONCAT(image, ',', ?) 
+                        END,
+                capacity = ? 
+                WHERE eid = ?";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("sisssssssssii", $event_name, $ownerID, $event_start_date, $event_end_date, 
+            $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, 
+            $details, $imagePathsString, $imagePathsString, $capacity, $event_id);
+        } else {
+            // ถ้าไม่มีการส่งค่า imageData มาใหม่
+            $query = "UPDATE events SET
+                event_name = ?, 
+                owner_id = ?, 
+                event_start_date = ?, 
+                event_end_date = ?, 
+                event_start_time = ?, 
+                event_end_time = ?, 
+                reg_start_date = ?, 
+                reg_end_date = ?, 
+                description = ?, 
+                capacity = ? 
+                WHERE eid = ?";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("sissssssssi", $event_name, $ownerID, $event_start_date, $event_end_date, 
+            $event_start_time, $event_end_time, $reg_start_date, $reg_end_date, 
+            $details, $capacity, $event_id);
+        }
+
+        if ($stmt->execute()) {
+            return "แก้ไขกิจกรรมสำเร็จ!"; 
+        }
+
+        return "เกิดข้อผิดพลาดในการอัพเดทกิจกรรม";
+    }
+    public function updateEventImages($eid, $newImages) {
+        // เตรียมคำสั่ง SQL สำหรับการอัปเดต
+        $query = "UPDATE events SET image = ? WHERE eid = ?";
     
+        // ใช้ prepare และ bind_param ของ MySQLi
+        $stmt = $this->conn->prepare($query);
+    
+        if ($stmt === false) {
+            // ตรวจสอบว่าคำสั่งเตรียมไม่สำเร็จ
+            die('MySQL prepare error: ' . $this->conn->error);
+        }
+    
+        // การใช้ bind_param สำหรับการเชื่อมค่าพารามิเตอร์
+        // 's' คือ type สำหรับ string และ 'i' คือ type สำหรับ integer
+        $stmt->bind_param('si', $newImages, $eid);
+    
+        // สั่งให้ทำการ execute คำสั่ง
+        $result = $stmt->execute();
+    
+        // ปิดการเชื่อมต่อกับฐานข้อมูล
+        $stmt->close();
+    
+        // คืนค่าผลลัพธ์ของการ execute คำสั่ง (true ถ้าทำงานสำเร็จ, false ถ้าล้มเหลว)
+        return $result;
+    }
+    
+
 }

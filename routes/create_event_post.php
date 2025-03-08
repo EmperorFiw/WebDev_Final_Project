@@ -21,11 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $uploadDir = 'assets/img/';
 
             foreach ($images['tmp_name'] as $key => $tmp_name) {
-                $imageInfo = getimagesize($tmp_name);
-                if ($imageInfo !== false) {
+                $mimeType = mime_content_type($tmp_name);
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
+                if (in_array($mimeType, $allowedTypes)) {
                     $fileExtension = pathinfo($images['name'][$key], PATHINFO_EXTENSION);
-                    $randomString = bin2hex(random_bytes(8));
+                    $randomString = bin2hex(random_bytes(8));  
                     $newFileName = $event_name . '_' . $randomString . '.' . $fileExtension; 
                     $filePath = $uploadDir . $newFileName;
 
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $imageData[] = $filePath; 
                     }
                 } else {
-                    swalAlert('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'create_event_get', 'create_event');
+                    swalAlertWithData('ไฟล์ที่อัปโหลดไม่ใช่รูปภาพ', 'error', 'edit_event_get', 'edit_event', $eventData, true);
                 }
             }
 

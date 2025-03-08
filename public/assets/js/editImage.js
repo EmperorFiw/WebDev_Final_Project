@@ -2,11 +2,10 @@ const imageInput = document.getElementById('image-input');
 const addImg = document.getElementById('addImg');
 const imageContainer = document.getElementById('image-container');
 const imageSlider = document.getElementById('image-slider');
-const deleteButton = document.getElementById('delete-image');
 const uploadText = document.getElementById('upload-text');
 const prevButton = document.getElementById('prev');
 const nextButton = document.getElementById('next');
-const delBtn = document.getElementById("delete-image-edit");
+// const delBtn = document.getElementById("delete-image-edit");
 const prevBtns = document.querySelectorAll('.prevBtn');
 const nextBtns = document.querySelectorAll('.nextBtn');
 
@@ -30,19 +29,38 @@ function initCarousel()
             });
         }
     
+        function getNowIndex() {
+            let nowIndex = -1; // ค่าเริ่มต้นเป็น -1 เผื่อว่าไม่มี active
+            carouselItems.forEach((item, i) => {
+                if (item.classList.contains('active')) {
+                    nowIndex = i; // ถ้าพบ active ก็อัปเดตค่า
+                }
+            });
+            return nowIndex; // คืนค่า index ของ item ที่ active อยู่
+        }
+        
         prevButton.removeEventListener('click', prevImageHandler);
         nextButton.removeEventListener('click', nextImageHandler);
     
         function prevImageHandler() {
-            currentIndex = (currentIndex === 0) ? imageList.length - 1 : currentIndex - 1;
+            let currentIndex = getNowIndex(); // หาค่าตำแหน่งปัจจุบัน
+
+            if (currentIndex === -1) return; // ป้องกัน error ถ้าไม่มีภาพ
+        
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : imageList.length - 1; // เลื่อนซ้าย
+        
             showSlide(currentIndex);
-            console.log(currentIndex);
+
         }
         
         function nextImageHandler() {
-            currentIndex = (currentIndex + 1) % imageList.length;
+            let currentIndex = getNowIndex(); // หาค่าตำแหน่งปัจจุบัน
+
+            if (currentIndex === -1) return; // ป้องกัน error ถ้าไม่มีภาพ
+        
+            currentIndex = (currentIndex < imageList.length - 1) ? currentIndex + 1 : 0; // เลื่อนขวา
+        
             showSlide(currentIndex);
-            console.log(currentIndex);
         }
     
         prevButton.addEventListener('click', prevImageHandler);
@@ -71,11 +89,13 @@ function updateImage() {
         addImg.innerText = "เพิ่มรูปภาพเพิ่ม";
     } else {
         imageSlider.innerHTML = `
-            <span id="upload-text" class="text-sm">คลิ๊กเพื่ออัปโหลด</span>
-            <span class="text-xs">หรือลากเพื่อวาง</span>
+            <div class="flex flex-col justify-center items-center h-full">
+                <span id="upload-text" class="text-sm mb-2">คลิ๊กเพื่ออัปโหลด</span>
+                <span class="text-xs">หรือลากเพื่อวาง</span>
+            </div>
         `;
         addImg.innerText = "เพิ่มรูปภาพ";
-        deleteButton.classList.add("hidden");
+        // delBtn.classList.add("hidden");
     }
     initCarousel();
 }
@@ -84,25 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initCarousel();
 
-    const delBtn = document.getElementById('delete-image-edit');
-    
     addImg.addEventListener('click', function() {
         imageInput.click();
     });
 
-    if (delBtn) {
-        delBtn.addEventListener('click', function(event) {
-            event.preventDefault();
-            const activeImage = document.querySelector('.carousel-item:not(.hidden) img');
-            if (activeImage) {
-                const imageContainer = activeImage.closest('.carousel-item');
-                imageContainer.remove();
-                showSlide(0);
-            }
-        });
-    } else {
-        console.error('Form or Button not found!');
-    }
 
     getAllImageSources();
 });
@@ -152,5 +157,15 @@ function getAllImageSources() {
         imageList.push(img.src); // เพิ่ม src ของแต่ละรูปเข้า imageList
     });
 
-    console.log(imageList); // ตรวจสอบค่าของ imageList
+    console.log(imageList); 
+    if (imageList.length == 0)
+    {
+        imageSlider.innerHTML = `
+        <div class="flex flex-col justify-center items-center h-full">
+            <span id="upload-text" class="text-sm mb-2">คลิ๊กเพื่ออัปโหลด</span>
+            <span class="text-xs">หรือลากเพื่อวาง</span>
+        </div>
+        `;
+        addImg.innerText = "เพิ่มรูปภาพ";
+    }
 }
