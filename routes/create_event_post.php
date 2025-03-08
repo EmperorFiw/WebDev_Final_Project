@@ -13,6 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $details = $_POST['details'] ?? '';
     $images = $_FILES['images'] ?? '';
 
+    if(strlen($event_name) > 32){
+        swalAlert('ชื่อกิจกรรมห้ามเกิน 32 ตัวอักษร','error','create_event_get','home');
+        return;
+    }
+
     if (!empty($event_name) || !empty($max_participants) || !empty($event_start_date) || !empty($event_end_date) || 
         !empty($event_start_time) || !empty($event_end_time) || !empty($reg_start_date) || !empty($reg_end_date) || !empty($details)) 
     {

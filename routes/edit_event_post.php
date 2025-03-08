@@ -18,6 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $events = new Events();
     $users = new Users();
 
+    if(strlen($event_name) > 32){
+        swalAlert('ชื่อกิจกรรมห้ามเกิน 32 ตัวอักษร','error','edit_event_get','home');
+        return;
+    }
+
     if (!$events->isOwnerEvent($_SESSION['username'], $event_id))
     {
         http_response_code(403);
