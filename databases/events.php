@@ -364,7 +364,7 @@ class Events {
         $stmt->bind_param("iii", $join_state, $uid, $eid);
     
         if ($stmt->execute()) {
-            if ($state === 0) {
+            if ($state === 4) {
                 return "ปฎิเสธผู้ใช้ " . $uname . " สำเร็จ!";
             } elseif ($state === 1) {
                 return "อนุมัติผู้ใช้ " . $uname . " สำเร็จ!";
