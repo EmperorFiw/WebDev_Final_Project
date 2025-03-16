@@ -21,6 +21,9 @@ else
             </div>
             <input type="date" name="date"
                 class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full md:w-auto pr-10">
+                <span class="text-white">To</span>
+            <input type="date" name="date"
+                class="px-4 py-2 bg-[#3E3E3E] rounded-lg text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white focus:border-white transition-all w-full md:w-auto pr-10">
             <button class="bg-[#301580] text-white px-4 py-2 rounded-2xl hover:bg-blue-600 w-full md:w-auto">ค้นหา</button>
         </div>
     </div>
