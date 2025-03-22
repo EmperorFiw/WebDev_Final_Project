@@ -110,15 +110,15 @@ class Events {
         return $result['total_registered'] ?? 0;
     }
     
-    function getEventDataByKeyword(string $keyword, string $date): array {
+    public function getEventDataByKeyword(string $keyword, string $date, string $date2): array {
         $conditions = [];
         
         if (!empty($keyword)) {
             $conditions[] = "event_name LIKE '%" . $this->conn->real_escape_string($keyword) . "%'";
         }
         
-        if (!empty($date)) {
-            $conditions[] = "(event_start_date <= '$date' AND event_end_date >= '$date')";
+        if (!empty($date) && !empty($date2)) {
+            $conditions[] = "(event_start_date >= '$date' AND event_end_date <= '$date2')";
         }
         
         $query = "SELECT * FROM events";
@@ -139,7 +139,7 @@ class Events {
             return [];
         }
     }
-
+    
     public function getEventDataByID(int $eid): array {
         $query = "SELECT * FROM events WHERE eid = ?";
         $stmt = $this->conn->prepare($query);

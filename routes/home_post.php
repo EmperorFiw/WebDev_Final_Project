@@ -4,9 +4,10 @@ declare(strict_types=1);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $key = isset($_POST['keyword']) ? $_POST['keyword'] : '';
     $date = isset($_POST['date']) ? $_POST['date'] : '';
+    $date2 = isset($_POST['date2']) ? $_POST['date2'] : '';
 
     $events = new Events();
-    $eventList = $events->getEventDataByKeyword($key, $date);
+    $eventList = $events->getEventDataByKeyword($key, $date, $date2);
 
     if (empty($eventList)) {
         renderView('home', ['not_found' => 1]);
